@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/routing/app_router.dart';
 import 'package:pokefy/theme/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  di.init();
   runApp(const MyApp());
 }
 
