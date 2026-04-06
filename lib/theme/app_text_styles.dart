@@ -12,26 +12,26 @@ class AppTextStyles {
 
 
   TextStyle iconAppText = GoogleFonts.calSans(
-    fontSize: 24,
+    fontSize: 20,
     color: AppTheme.appColors.primary,
     fontWeight: FontWeight.bold,
   );
 
   TextStyle header1 = GoogleFonts.poppins(
     fontSize: 24,
-    color: Colors.black,
+    color: Colors.white,
     fontWeight: FontWeight.bold,
   );
 
   TextStyle header2 = GoogleFonts.poppins(
     fontSize: 20,
-    color: Colors.black,
+    color: Colors.white,
     fontWeight: FontWeight.bold,
   );
 
   TextStyle header3 = GoogleFonts.poppins(
     fontSize: 16,
-    color: Colors.black,
+    color: Colors.white,
     fontWeight: FontWeight.bold,
   );
 
@@ -42,13 +42,19 @@ class AppTextStyles {
 
   TextStyle bodyMedium = GoogleFonts.poppins(
     fontSize: 14,
-    color: Colors.black,
+    color: Colors.white,
     fontWeight: FontWeight.w500,
   );
 
   TextStyle bodySmall = GoogleFonts.poppins(
     fontSize: 12,
-    color: Colors.black,
+    color: Colors.white,
+    fontWeight: FontWeight.w500,
+  );
+
+  TextStyle bodyXSmall = GoogleFonts.poppins(
+    fontSize: 10,
+    color: Colors.white,
     fontWeight: FontWeight.w500,
   );
 
