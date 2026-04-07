@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
+import 'package:pokefy/presentation/widgets/type_chip.dart';
 import 'package:pokefy/theme/app_theme.dart';
+import 'package:pokefy/utils/text_helper.dart';
+import 'package:pokefy/utils/type_color.dart';
 
 class ItemPokemon extends StatelessWidget {
-  const ItemPokemon({super.key});
+  const ItemPokemon({super.key, required this.pokemon});
+
+  final PokemonEntity pokemon;
 
   @override
   Widget build(BuildContext context) {
+    final typeNames =
+        pokemon.types
+            ?.map((item) => item.type?.name?.toLowerCase() ?? 'unknown')
+            .toList() ??
+        [];
+    final pokemonName = pokemon.name ?? '-';
+    final imageUrl = pokemon.sprites?.other?.home?.frontDefault;
+    final baseColor =
+        typeColorMap[typeNames.isNotEmpty ? typeNames.first : 'unknown'] ??
+        const Color(0xFF808080);
+
     return Container(
       color: Colors.transparent,
       child: Stack(
@@ -19,10 +37,7 @@ class ItemPokemon extends StatelessWidget {
                 borderRadius: BorderRadius.circular(35),
                 gradient: LinearGradient(
                   stops: const [0.6, 1.0],
-                  colors: [
-                    Color(0xFF6890F0),
-                    AppTheme.appColors.white,
-                  ],
+                  colors: [baseColor, AppTheme.appColors.white],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -31,80 +46,59 @@ class ItemPokemon extends StatelessWidget {
           ),
           Column(
             children: [
-              Image.asset(
-                "assets/images/psyduck.png",
-                width: 130,
-                height: 130,
-              ),
-              SizedBox(height: 12),
+              (imageUrl == null || imageUrl.isEmpty)
+                  ? Image.asset(
+                      'assets/images/image_failed.png',
+                      width: 130,
+                      height: 130,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      width: 130,
+                      height: 130,
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) => const SizedBox(
+                        width: 130,
+                        height: 130,
+                        child: Center(
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/images/image_failed.png',
+                        width: 130,
+                        height: 130,
+                      ),
+                    ),
+
+              const SizedBox(height: 12),
               Text(
-                "Psyduck",
+                capitalize(pokemonName),
                 style: AppTheme.appTextStyles.header3.copyWith(
                   color: AppTheme.appColors.white,
                 ),
               ),
-              SizedBox(height: 6),
+              const SizedBox(height: 6),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 4.0,
-                      horizontal: 8.0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.8),
-                      border: Border.all(
-                        color: Color(0xFF6890F0),
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          "assets/icons/types/water.png",
-                          width: 10,
-                          height: 10,
-                          color: Color(0xFF6890F0),
+                  ...typeNames
+                      .take(2)
+                      .map(
+                        (type) => Padding(
+                          padding: const EdgeInsets.only(right: 4),
+                          child: TypeChip(type: type),
                         ),
-                        const SizedBox(width: 2),
-                        Text(
-                          "Water",
-                          style: AppTheme.appTextStyles.bodyXSmall.copyWith(
-                            color: Color(0xFF6890F0),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 4.0,
-                      horizontal: 8.0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.8),
-                      border: Border.all(
-                        color: Color(0xFFA040A0),
                       ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      "Poison",
-                      style: AppTheme.appTextStyles.bodyXSmall.copyWith(
-                        color: Color(0xFFA040A0),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 4),
                   SvgPicture.asset(
-                    "assets/icons/ic_male.svg",
+                    pokemon.sprites?.frontFemale != null
+                        ? 'assets/icons/ic_female.svg'
+                        : 'assets/icons/ic_male.svg',
                     width: 26,
                     height: 26,
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ],

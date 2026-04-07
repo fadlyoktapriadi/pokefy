@@ -1,8 +1,7 @@
-
-import 'package:dartz/dartz.dart';
-import 'package:pokefy/core/error/failure.dart';
 import 'package:pokefy/data/models/response/pokemon_list_response_dto.dart';
+import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 
 abstract class PokemonRemoteDataSource {
   Future<PokemonListResponseDto> getListPokemon();
+  Future<PokemonEntity> getPokemonDetail(String name);
 }

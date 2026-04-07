@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:pokefy/core/error/failure.dart';
 import 'package:pokefy/data/datasources/remote/pokemon_remote_data_source.dart';
-import 'package:pokefy/domain/entity/pokemon_entity.dart';
+import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/domain/repository/pokemon_repository.dart';
 
 class PokemonRepositoryImpl extends PokemonRepository {
@@ -9,19 +9,28 @@ class PokemonRepositoryImpl extends PokemonRepository {
 
   PokemonRepositoryImpl({required this.pokemonRemoteDataSource});
 
-    @override
-    Future<Either<Failure, List<PokemonEntity>>> getListPokemon() async {
-      try {
-        final result = await pokemonRemoteDataSource.getListPokemon();
+  @override
+  Future<Either<Failure, List<PokemonEntity>>> getListPokemon() async {
+    try {
+      final result = await pokemonRemoteDataSource.getListPokemon();
 
-        final List<PokemonEntity> pokemonList = result.results
-            .map((item) => PokemonEntity(name: item.name))
-            .toList();
+      final List<PokemonEntity> pokemonList = result.results
+          .map((item) => PokemonEntity(name: item.name))
+          .toList();
 
-        return Right(pokemonList);
-      } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
-      }
+      return Right(pokemonList);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
     }
+  }
 
+  @override
+  Future<Either<Failure, PokemonEntity>> getPokemonDetail(String name) async {
+    try {
+      final result = await pokemonRemoteDataSource.getPokemonDetail(name);
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }
