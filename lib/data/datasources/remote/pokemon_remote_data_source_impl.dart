@@ -10,9 +10,15 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
   PokemonRemoteDataSourceImpl({required this.dioClient});
 
   @override
-  Future<PokemonListResponseDto> getListPokemon() async {
+  Future<PokemonListResponseDto> getListPokemon({required int offset, required int limit}) async {
     try {
-      final response = await dioClient.dio.get('/pokemon');
+      final response = await dioClient.dio.get(
+        '/pokemon',
+        queryParameters: {
+          'offset': offset,
+          'limit': limit,
+        },
+      );
       return PokemonListResponseDto.fromJson(response.data);
     } catch (e) {
       throw ServerFailure(message: e.toString());

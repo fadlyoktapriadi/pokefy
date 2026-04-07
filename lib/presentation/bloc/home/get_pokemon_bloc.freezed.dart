@@ -55,11 +55,12 @@ extension GetPokemonEventPatterns on GetPokemonEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _GetListPokemonEvent value)?  getListPokemon,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _GetListPokemonEvent value)?  getListPokemon,TResult Function( _FetchNextPageEvent value)?  fetchNextPage,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _GetListPokemonEvent() when getListPokemon != null:
-return getListPokemon(_that);case _:
+return getListPokemon(_that);case _FetchNextPageEvent() when fetchNextPage != null:
+return fetchNextPage(_that);case _:
   return orElse();
 
 }
@@ -77,11 +78,12 @@ return getListPokemon(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _GetListPokemonEvent value)  getListPokemon,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _GetListPokemonEvent value)  getListPokemon,required TResult Function( _FetchNextPageEvent value)  fetchNextPage,}){
 final _that = this;
 switch (_that) {
 case _GetListPokemonEvent():
-return getListPokemon(_that);case _:
+return getListPokemon(_that);case _FetchNextPageEvent():
+return fetchNextPage(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +100,12 @@ return getListPokemon(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _GetListPokemonEvent value)?  getListPokemon,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _GetListPokemonEvent value)?  getListPokemon,TResult? Function( _FetchNextPageEvent value)?  fetchNextPage,}){
 final _that = this;
 switch (_that) {
 case _GetListPokemonEvent() when getListPokemon != null:
-return getListPokemon(_that);case _:
+return getListPokemon(_that);case _FetchNextPageEvent() when fetchNextPage != null:
+return fetchNextPage(_that);case _:
   return null;
 
 }
@@ -119,10 +122,11 @@ return getListPokemon(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  getListPokemon,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  getListPokemon,TResult Function()?  fetchNextPage,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GetListPokemonEvent() when getListPokemon != null:
-return getListPokemon();case _:
+return getListPokemon();case _FetchNextPageEvent() when fetchNextPage != null:
+return fetchNextPage();case _:
   return orElse();
 
 }
@@ -140,10 +144,11 @@ return getListPokemon();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  getListPokemon,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  getListPokemon,required TResult Function()  fetchNextPage,}) {final _that = this;
 switch (_that) {
 case _GetListPokemonEvent():
-return getListPokemon();case _:
+return getListPokemon();case _FetchNextPageEvent():
+return fetchNextPage();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +165,11 @@ return getListPokemon();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  getListPokemon,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  getListPokemon,TResult? Function()?  fetchNextPage,}) {final _that = this;
 switch (_that) {
 case _GetListPokemonEvent() when getListPokemon != null:
-return getListPokemon();case _:
+return getListPokemon();case _FetchNextPageEvent() when fetchNextPage != null:
+return fetchNextPage();case _:
   return null;
 
 }
@@ -195,6 +201,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'GetPokemonEvent.getListPokemon()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _FetchNextPageEvent implements GetPokemonEvent {
+  const _FetchNextPageEvent();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FetchNextPageEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GetPokemonEvent.fetchNextPage()';
 }
 
 
@@ -320,12 +358,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<PokemonEntity> listPokemon)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<PokemonEntity> listPokemon,  bool hasReachedMax,  bool isLoadingMore)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GetPokemonInitial() when initial != null:
 return initial();case _GetPokemonLoading() when loading != null:
 return loading();case _GetPokemonLoaded() when loaded != null:
-return loaded(_that.listPokemon);case _GetPokemonError() when error != null:
+return loaded(_that.listPokemon,_that.hasReachedMax,_that.isLoadingMore);case _GetPokemonError() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -344,12 +382,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<PokemonEntity> listPokemon)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<PokemonEntity> listPokemon,  bool hasReachedMax,  bool isLoadingMore)  loaded,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case _GetPokemonInitial():
 return initial();case _GetPokemonLoading():
 return loading();case _GetPokemonLoaded():
-return loaded(_that.listPokemon);case _GetPokemonError():
+return loaded(_that.listPokemon,_that.hasReachedMax,_that.isLoadingMore);case _GetPokemonError():
 return error(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -367,12 +405,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<PokemonEntity> listPokemon)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<PokemonEntity> listPokemon,  bool hasReachedMax,  bool isLoadingMore)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case _GetPokemonInitial() when initial != null:
 return initial();case _GetPokemonLoading() when loading != null:
 return loading();case _GetPokemonLoaded() when loaded != null:
-return loaded(_that.listPokemon);case _GetPokemonError() when error != null:
+return loaded(_that.listPokemon,_that.hasReachedMax,_that.isLoadingMore);case _GetPokemonError() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -449,7 +487,7 @@ String toString() {
 
 
 class _GetPokemonLoaded implements GetPokemonState {
-  const _GetPokemonLoaded(final  List<PokemonEntity> listPokemon): _listPokemon = listPokemon;
+  const _GetPokemonLoaded({required final  List<PokemonEntity> listPokemon, required this.hasReachedMax, this.isLoadingMore = false}): _listPokemon = listPokemon;
   
 
  final  List<PokemonEntity> _listPokemon;
@@ -459,6 +497,8 @@ class _GetPokemonLoaded implements GetPokemonState {
   return EqualUnmodifiableListView(_listPokemon);
 }
 
+ final  bool hasReachedMax;
+@JsonKey() final  bool isLoadingMore;
 
 /// Create a copy of GetPokemonState
 /// with the given fields replaced by the non-null parameter values.
@@ -470,16 +510,16 @@ _$GetPokemonLoadedCopyWith<_GetPokemonLoaded> get copyWith => __$GetPokemonLoade
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetPokemonLoaded&&const DeepCollectionEquality().equals(other._listPokemon, _listPokemon));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetPokemonLoaded&&const DeepCollectionEquality().equals(other._listPokemon, _listPokemon)&&(identical(other.hasReachedMax, hasReachedMax) || other.hasReachedMax == hasReachedMax)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_listPokemon));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_listPokemon),hasReachedMax,isLoadingMore);
 
 @override
 String toString() {
-  return 'GetPokemonState.loaded(listPokemon: $listPokemon)';
+  return 'GetPokemonState.loaded(listPokemon: $listPokemon, hasReachedMax: $hasReachedMax, isLoadingMore: $isLoadingMore)';
 }
 
 
@@ -490,7 +530,7 @@ abstract mixin class _$GetPokemonLoadedCopyWith<$Res> implements $GetPokemonStat
   factory _$GetPokemonLoadedCopyWith(_GetPokemonLoaded value, $Res Function(_GetPokemonLoaded) _then) = __$GetPokemonLoadedCopyWithImpl;
 @useResult
 $Res call({
- List<PokemonEntity> listPokemon
+ List<PokemonEntity> listPokemon, bool hasReachedMax, bool isLoadingMore
 });
 
 
@@ -507,10 +547,12 @@ class __$GetPokemonLoadedCopyWithImpl<$Res>
 
 /// Create a copy of GetPokemonState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? listPokemon = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? listPokemon = null,Object? hasReachedMax = null,Object? isLoadingMore = null,}) {
   return _then(_GetPokemonLoaded(
-null == listPokemon ? _self._listPokemon : listPokemon // ignore: cast_nullable_to_non_nullable
-as List<PokemonEntity>,
+listPokemon: null == listPokemon ? _self._listPokemon : listPokemon // ignore: cast_nullable_to_non_nullable
+as List<PokemonEntity>,hasReachedMax: null == hasReachedMax ? _self.hasReachedMax : hasReachedMax // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

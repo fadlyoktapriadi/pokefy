@@ -1,29 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/presentation/bloc/home/get_pokemon_bloc.dart';
 import 'package:pokefy/presentation/widgets/item_pokemon.dart';
 import 'package:pokefy/theme/app_theme.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late final GetPokemonBloc _getPokemonBloc;
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _getPokemonBloc = di.locator<GetPokemonBloc>()
+      ..add(GetPokemonEvent.getListPokemon());
+    _scrollController = ScrollController()..addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+
+    final threshold = _scrollController.position.maxScrollExtent * 0.8;
+    if (_scrollController.position.pixels >= threshold) {
+      _getPokemonBloc.add(const GetPokemonEvent.fetchNextPage());
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    _getPokemonBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          di.locator<GetPokemonBloc>()..add(GetPokemonEvent.getListPokemon()),
+    return BlocProvider.value(
+      value: _getPokemonBloc,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                AppTheme.appColors.white,
-                AppTheme.appColors.white,
-                AppTheme.appColors.white.withValues(alpha: 0.85),
-                AppTheme.appColors.white,
-              ],
+              colors: [Color(0xFFebf4f5), Color(0xFFb5c6e0)],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -37,9 +66,15 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Pokefy", style: AppTheme.appTextStyles.iconAppText),
+                      Image.asset(
+                        "assets/icons/ic_favorite_list.png",
+                        width: 32,
+                        height: 32,
+                        color: AppTheme.appColors.secondary,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 18),
@@ -54,12 +89,13 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   SizedBox(
-                    height: 45,
+                    height: 60,
                     child: TextField(
                       decoration: InputDecoration(
                         hintText: "Search",
-                        prefixIcon: const Icon(Icons.search),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                        hintStyle: TextStyle(color: AppTheme.appColors.softGrey),
+                        suffixIcon: Icon(Icons.search, color: AppTheme.appColors.softGrey),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 0 , horizontal: 14),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide.none,
@@ -86,19 +122,35 @@ class HomeScreen extends StatelessWidget {
                               const Center(child: CircularProgressIndicator()),
                           loading: () =>
                               const Center(child: CircularProgressIndicator()),
-                          loaded: (listPokemon) => GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 5,
-                                  childAspectRatio: 0.86,
-                                ),
-                            itemCount: listPokemon.length,
-                            itemBuilder: (context, index) {
-                              return ItemPokemon(pokemon: listPokemon[index]);
-                            },
-                          ),
+                          loaded: (listPokemon, hasReachedMax, isLoadingMore) {
+                            final itemCount = isLoadingMore && !hasReachedMax
+                                ? listPokemon.length + 1
+                                : listPokemon.length;
+
+                            return GridView.builder(
+                              controller: _scrollController,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 5,
+                                    childAspectRatio: 0.86,
+                                  ),
+                              itemCount: itemCount,
+                              itemBuilder: (context, index) {
+                                if (index >= listPokemon.length) {
+                                  return const Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(16),
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                }
+
+                                return ItemPokemon(pokemon: listPokemon[index]);
+                              },
+                            );
+                          },
                           error: (message) => Center(
                             child: Text(
                               message,

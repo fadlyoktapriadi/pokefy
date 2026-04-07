@@ -10,9 +10,9 @@ class PokemonRepositoryImpl extends PokemonRepository {
   PokemonRepositoryImpl({required this.pokemonRemoteDataSource});
 
   @override
-  Future<Either<Failure, List<PokemonEntity>>> getListPokemon() async {
+  Future<Either<Failure, List<PokemonEntity>>> getListPokemon(int offset, int limit) async {
     try {
-      final result = await pokemonRemoteDataSource.getListPokemon();
+      final result = await pokemonRemoteDataSource.getListPokemon(offset: offset, limit: limit);
 
       final List<PokemonEntity> pokemonList = result.results
           .map((item) => PokemonEntity(name: item.name))

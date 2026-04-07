@@ -12,7 +12,7 @@ class AppTextStyles {
 
 
   TextStyle iconAppText = GoogleFonts.calSans(
-    fontSize: 20,
+    fontSize: 26,
     color: AppTheme.appColors.primary,
     fontWeight: FontWeight.bold,
   );

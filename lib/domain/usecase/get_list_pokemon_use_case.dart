@@ -8,7 +8,7 @@ class GetListPokemonUseCase {
 
   GetListPokemonUseCase(this.repository);
 
-  Future<Either<Failure, List<PokemonEntity>>> call() async {
-    return await repository.getListPokemon();
+  Future<Either<Failure, List<PokemonEntity>>> call(int offset, int limit) async {
+    return await repository.getListPokemon(offset, limit);
   }
 }

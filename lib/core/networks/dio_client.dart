@@ -18,15 +18,15 @@ class DioClient {
     _dio.options.responseType = ResponseType.json;
 
     _dio.interceptors.addAll([
-      PrettyDioLogger(
-        requestHeader: true,
-        requestBody: true,
-        responseBody: true,
-        responseHeader: false,
-        error: true,
-        compact: true,
-        maxWidth: 90,
-      ),
+      // PrettyDioLogger(
+      //   requestHeader: true,
+      //   requestBody: true,
+      //   responseBody: true,
+      //   responseHeader: false,
+      //   error: true,
+      //   compact: true,
+      //   maxWidth: 90,
+      // ),
       _ErrorInterceptor(),
       RetryInterceptor(
         dio: _dio,
