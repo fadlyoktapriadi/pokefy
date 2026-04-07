@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/presentation/bloc/home/get_pokemon_bloc.dart';
 import 'package:pokefy/presentation/widgets/item_pokemon.dart';
@@ -94,8 +94,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       decoration: InputDecoration(
                         hintText: "Search",
                         hintStyle: TextStyle(color: AppTheme.appColors.softGrey),
-                        suffixIcon: Icon(Icons.search, color: AppTheme.appColors.softGrey),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 0 , horizontal: 14),
+                        suffixIcon: Icon(
+                          Icons.search,
+                          color: AppTheme.appColors.softGrey,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 0,
+                          horizontal: 14,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide.none,
@@ -118,10 +124,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: BlocBuilder<GetPokemonBloc, GetPokemonState>(
                       builder: (context, state) {
                         return state.when(
-                          initial: () =>
-                              const Center(child: CircularProgressIndicator()),
-                          loading: () =>
-                              const Center(child: CircularProgressIndicator()),
+                          initial:
+                              () =>
+                                  const Center(child: CircularProgressIndicator()),
+                          loading:
+                              () =>
+                                  const Center(child: CircularProgressIndicator()),
                           loaded: (listPokemon, hasReachedMax, isLoadingMore) {
                             final itemCount = isLoadingMore && !hasReachedMax
                                 ? listPokemon.length + 1
@@ -133,8 +141,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 10,
-                                    mainAxisSpacing: 5,
-                                    childAspectRatio: 0.86,
+                                    mainAxisSpacing: 10,
+                                    childAspectRatio: 0.8,
                                   ),
                               itemCount: itemCount,
                               itemBuilder: (context, index) {
@@ -147,7 +155,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   );
                                 }
 
-                                return ItemPokemon(pokemon: listPokemon[index]);
+                                return ItemPokemon(
+                                  pokemon: listPokemon[index],
+                                  onTap: () {
+                                    context.pushNamed(
+                                      'detail',
+                                      extra: listPokemon[index],
+                                    );
+                                  },
+                                );
                               },
                             );
                           },
