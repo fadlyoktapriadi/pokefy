@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
+import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
 import 'package:pokefy/presentation/pages/detail/tab/about_tab.dart';
 import 'package:pokefy/presentation/pages/detail/tab/evolution_tab.dart';
 import 'package:pokefy/presentation/pages/detail/tab/moves_tab.dart';
 import 'package:pokefy/presentation/pages/detail/tab/stats_tab.dart';
 import 'package:pokefy/theme/app_theme.dart';
+import 'package:pokefy/utils/text_helper.dart';
 import 'package:pokefy/utils/type_color.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -14,14 +18,21 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          DetailBackground(pokemon: pokemon),
-          DetailPokemonImage(pokemon: pokemon),
-          DetailHeader(pokemon: pokemon),
-          const DetailBottomPanel(),
-        ],
+    final pokemonId = pokemon.id?.toString() ?? '';
+
+    return BlocProvider(
+      create: (_) =>
+          di.locator<GetSpeciesBloc>()
+            ..add(GetSpeciesEvent.getSpecies(id: pokemonId)),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            DetailBackground(pokemon: pokemon),
+            DetailBottomPanel(pokemon: pokemon),
+            DetailPokemonImage(pokemon: pokemon),
+            DetailHeader(pokemon: pokemon),
+          ],
+        ),
       ),
     );
   }
@@ -115,8 +126,11 @@ class DetailHeader extends StatelessWidget {
               ),
             ),
             Text(
-              pokemon.name ?? '-',
-              style: AppTheme.appTextStyles.header2.copyWith(letterSpacing: 1),
+              capitalize(pokemon.name ?? '-'),
+              style: AppTheme.appTextStyles.header2.copyWith(
+                color: AppTheme.appColors.white,
+                letterSpacing: 1.2,
+              ),
             ),
             Image.asset(
               'assets/icons/ic_favorite.png',
@@ -132,7 +146,9 @@ class DetailHeader extends StatelessWidget {
 }
 
 class DetailBottomPanel extends StatefulWidget {
-  const DetailBottomPanel({super.key});
+  final PokemonEntity pokemon;
+
+  const DetailBottomPanel({super.key, required this.pokemon});
 
   @override
   State<DetailBottomPanel> createState() => _DetailBottomPanelState();
@@ -147,7 +163,7 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.45,
+        height: MediaQuery.of(context).size.height * 0.63,
         decoration: BoxDecoration(
           color: AppTheme.appColors.white,
           borderRadius: BorderRadius.only(
@@ -159,17 +175,7 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 30),
-                decoration: BoxDecoration(
-                  color: AppTheme.appColors.softGrey,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
+            const SizedBox(height: 58),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(_tabs.length, (index) {
@@ -184,18 +190,18 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
                 );
               }),
             ),
-            const SizedBox(height: 35),
-            Expanded(child: _buildTabContent()),
+            const SizedBox(height: 24),
+            Expanded(child: _buildTabContent(widget.pokemon)),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTabContent() {
+  Widget _buildTabContent(PokemonEntity pokemon) {
     switch (_selectedTabIndex) {
       case 0:
-        return const AboutTab();
+        return AboutTab(pokemon: pokemon);
       case 1:
         return const StatsTab();
       case 2:

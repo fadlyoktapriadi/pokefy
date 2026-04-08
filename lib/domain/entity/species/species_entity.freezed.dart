@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SpeciesEntity {
 
-@JsonKey(name: "name") String? get name;@JsonKey(name: "url") String? get url;
+@JsonKey(name: "egg_groups") List<EggGroupsEntity>? get eggGroups;@JsonKey(name: "evolution_chain") EvolutionChainEntity? get evolutionChain;@JsonKey(name: "gender_rate") int? get genderRate;@JsonKey(name: "habitat") HabitatEntity? get habitat;@JsonKey(name: "hatch_counter") int? get hatchCounter;@JsonKey(name: "id") int? get id;@JsonKey(name: "name") String? get name;
 /// Create a copy of SpeciesEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SpeciesEntityCopyWith<SpeciesEntity> get copyWith => _$SpeciesEntityCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SpeciesEntity&&(identical(other.name, name) || other.name == name)&&(identical(other.url, url) || other.url == url));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SpeciesEntity&&const DeepCollectionEquality().equals(other.eggGroups, eggGroups)&&(identical(other.evolutionChain, evolutionChain) || other.evolutionChain == evolutionChain)&&(identical(other.genderRate, genderRate) || other.genderRate == genderRate)&&(identical(other.habitat, habitat) || other.habitat == habitat)&&(identical(other.hatchCounter, hatchCounter) || other.hatchCounter == hatchCounter)&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,url);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(eggGroups),evolutionChain,genderRate,habitat,hatchCounter,id,name);
 
 @override
 String toString() {
-  return 'SpeciesEntity(name: $name, url: $url)';
+  return 'SpeciesEntity(eggGroups: $eggGroups, evolutionChain: $evolutionChain, genderRate: $genderRate, habitat: $habitat, hatchCounter: $hatchCounter, id: $id, name: $name)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $SpeciesEntityCopyWith<$Res>  {
   factory $SpeciesEntityCopyWith(SpeciesEntity value, $Res Function(SpeciesEntity) _then) = _$SpeciesEntityCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: "name") String? name,@JsonKey(name: "url") String? url
+@JsonKey(name: "egg_groups") List<EggGroupsEntity>? eggGroups,@JsonKey(name: "evolution_chain") EvolutionChainEntity? evolutionChain,@JsonKey(name: "gender_rate") int? genderRate,@JsonKey(name: "habitat") HabitatEntity? habitat,@JsonKey(name: "hatch_counter") int? hatchCounter,@JsonKey(name: "id") int? id,@JsonKey(name: "name") String? name
 });
 
 
-
+$EvolutionChainEntityCopyWith<$Res>? get evolutionChain;$HabitatEntityCopyWith<$Res>? get habitat;
 
 }
 /// @nodoc
@@ -65,14 +65,43 @@ class _$SpeciesEntityCopyWithImpl<$Res>
 
 /// Create a copy of SpeciesEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? url = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? eggGroups = freezed,Object? evolutionChain = freezed,Object? genderRate = freezed,Object? habitat = freezed,Object? hatchCounter = freezed,Object? id = freezed,Object? name = freezed,}) {
   return _then(_self.copyWith(
-name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,url: freezed == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+eggGroups: freezed == eggGroups ? _self.eggGroups : eggGroups // ignore: cast_nullable_to_non_nullable
+as List<EggGroupsEntity>?,evolutionChain: freezed == evolutionChain ? _self.evolutionChain : evolutionChain // ignore: cast_nullable_to_non_nullable
+as EvolutionChainEntity?,genderRate: freezed == genderRate ? _self.genderRate : genderRate // ignore: cast_nullable_to_non_nullable
+as int?,habitat: freezed == habitat ? _self.habitat : habitat // ignore: cast_nullable_to_non_nullable
+as HabitatEntity?,hatchCounter: freezed == hatchCounter ? _self.hatchCounter : hatchCounter // ignore: cast_nullable_to_non_nullable
+as int?,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
+/// Create a copy of SpeciesEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$EvolutionChainEntityCopyWith<$Res>? get evolutionChain {
+    if (_self.evolutionChain == null) {
+    return null;
+  }
 
+  return $EvolutionChainEntityCopyWith<$Res>(_self.evolutionChain!, (value) {
+    return _then(_self.copyWith(evolutionChain: value));
+  });
+}/// Create a copy of SpeciesEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$HabitatEntityCopyWith<$Res>? get habitat {
+    if (_self.habitat == null) {
+    return null;
+  }
+
+  return $HabitatEntityCopyWith<$Res>(_self.habitat!, (value) {
+    return _then(_self.copyWith(habitat: value));
+  });
+}
 }
 
 
@@ -154,10 +183,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "name")  String? name, @JsonKey(name: "url")  String? url)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "egg_groups")  List<EggGroupsEntity>? eggGroups, @JsonKey(name: "evolution_chain")  EvolutionChainEntity? evolutionChain, @JsonKey(name: "gender_rate")  int? genderRate, @JsonKey(name: "habitat")  HabitatEntity? habitat, @JsonKey(name: "hatch_counter")  int? hatchCounter, @JsonKey(name: "id")  int? id, @JsonKey(name: "name")  String? name)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SpeciesEntity() when $default != null:
-return $default(_that.name,_that.url);case _:
+return $default(_that.eggGroups,_that.evolutionChain,_that.genderRate,_that.habitat,_that.hatchCounter,_that.id,_that.name);case _:
   return orElse();
 
 }
@@ -175,10 +204,10 @@ return $default(_that.name,_that.url);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "name")  String? name, @JsonKey(name: "url")  String? url)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "egg_groups")  List<EggGroupsEntity>? eggGroups, @JsonKey(name: "evolution_chain")  EvolutionChainEntity? evolutionChain, @JsonKey(name: "gender_rate")  int? genderRate, @JsonKey(name: "habitat")  HabitatEntity? habitat, @JsonKey(name: "hatch_counter")  int? hatchCounter, @JsonKey(name: "id")  int? id, @JsonKey(name: "name")  String? name)  $default,) {final _that = this;
 switch (_that) {
 case _SpeciesEntity():
-return $default(_that.name,_that.url);case _:
+return $default(_that.eggGroups,_that.evolutionChain,_that.genderRate,_that.habitat,_that.hatchCounter,_that.id,_that.name);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +224,10 @@ return $default(_that.name,_that.url);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "name")  String? name, @JsonKey(name: "url")  String? url)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "egg_groups")  List<EggGroupsEntity>? eggGroups, @JsonKey(name: "evolution_chain")  EvolutionChainEntity? evolutionChain, @JsonKey(name: "gender_rate")  int? genderRate, @JsonKey(name: "habitat")  HabitatEntity? habitat, @JsonKey(name: "hatch_counter")  int? hatchCounter, @JsonKey(name: "id")  int? id, @JsonKey(name: "name")  String? name)?  $default,) {final _that = this;
 switch (_that) {
 case _SpeciesEntity() when $default != null:
-return $default(_that.name,_that.url);case _:
+return $default(_that.eggGroups,_that.evolutionChain,_that.genderRate,_that.habitat,_that.hatchCounter,_that.id,_that.name);case _:
   return null;
 
 }
@@ -210,11 +239,24 @@ return $default(_that.name,_that.url);case _:
 @JsonSerializable()
 
 class _SpeciesEntity implements SpeciesEntity {
-  const _SpeciesEntity({@JsonKey(name: "name") this.name, @JsonKey(name: "url") this.url});
+  const _SpeciesEntity({@JsonKey(name: "egg_groups") final  List<EggGroupsEntity>? eggGroups, @JsonKey(name: "evolution_chain") this.evolutionChain, @JsonKey(name: "gender_rate") this.genderRate, @JsonKey(name: "habitat") this.habitat, @JsonKey(name: "hatch_counter") this.hatchCounter, @JsonKey(name: "id") this.id, @JsonKey(name: "name") this.name}): _eggGroups = eggGroups;
   factory _SpeciesEntity.fromJson(Map<String, dynamic> json) => _$SpeciesEntityFromJson(json);
 
+ final  List<EggGroupsEntity>? _eggGroups;
+@override@JsonKey(name: "egg_groups") List<EggGroupsEntity>? get eggGroups {
+  final value = _eggGroups;
+  if (value == null) return null;
+  if (_eggGroups is EqualUnmodifiableListView) return _eggGroups;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+@override@JsonKey(name: "evolution_chain") final  EvolutionChainEntity? evolutionChain;
+@override@JsonKey(name: "gender_rate") final  int? genderRate;
+@override@JsonKey(name: "habitat") final  HabitatEntity? habitat;
+@override@JsonKey(name: "hatch_counter") final  int? hatchCounter;
+@override@JsonKey(name: "id") final  int? id;
 @override@JsonKey(name: "name") final  String? name;
-@override@JsonKey(name: "url") final  String? url;
 
 /// Create a copy of SpeciesEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +271,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SpeciesEntity&&(identical(other.name, name) || other.name == name)&&(identical(other.url, url) || other.url == url));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SpeciesEntity&&const DeepCollectionEquality().equals(other._eggGroups, _eggGroups)&&(identical(other.evolutionChain, evolutionChain) || other.evolutionChain == evolutionChain)&&(identical(other.genderRate, genderRate) || other.genderRate == genderRate)&&(identical(other.habitat, habitat) || other.habitat == habitat)&&(identical(other.hatchCounter, hatchCounter) || other.hatchCounter == hatchCounter)&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,url);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_eggGroups),evolutionChain,genderRate,habitat,hatchCounter,id,name);
 
 @override
 String toString() {
-  return 'SpeciesEntity(name: $name, url: $url)';
+  return 'SpeciesEntity(eggGroups: $eggGroups, evolutionChain: $evolutionChain, genderRate: $genderRate, habitat: $habitat, hatchCounter: $hatchCounter, id: $id, name: $name)';
 }
 
 
@@ -249,11 +291,11 @@ abstract mixin class _$SpeciesEntityCopyWith<$Res> implements $SpeciesEntityCopy
   factory _$SpeciesEntityCopyWith(_SpeciesEntity value, $Res Function(_SpeciesEntity) _then) = __$SpeciesEntityCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: "name") String? name,@JsonKey(name: "url") String? url
+@JsonKey(name: "egg_groups") List<EggGroupsEntity>? eggGroups,@JsonKey(name: "evolution_chain") EvolutionChainEntity? evolutionChain,@JsonKey(name: "gender_rate") int? genderRate,@JsonKey(name: "habitat") HabitatEntity? habitat,@JsonKey(name: "hatch_counter") int? hatchCounter,@JsonKey(name: "id") int? id,@JsonKey(name: "name") String? name
 });
 
 
-
+@override $EvolutionChainEntityCopyWith<$Res>? get evolutionChain;@override $HabitatEntityCopyWith<$Res>? get habitat;
 
 }
 /// @nodoc
@@ -266,15 +308,44 @@ class __$SpeciesEntityCopyWithImpl<$Res>
 
 /// Create a copy of SpeciesEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? url = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? eggGroups = freezed,Object? evolutionChain = freezed,Object? genderRate = freezed,Object? habitat = freezed,Object? hatchCounter = freezed,Object? id = freezed,Object? name = freezed,}) {
   return _then(_SpeciesEntity(
-name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,url: freezed == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+eggGroups: freezed == eggGroups ? _self._eggGroups : eggGroups // ignore: cast_nullable_to_non_nullable
+as List<EggGroupsEntity>?,evolutionChain: freezed == evolutionChain ? _self.evolutionChain : evolutionChain // ignore: cast_nullable_to_non_nullable
+as EvolutionChainEntity?,genderRate: freezed == genderRate ? _self.genderRate : genderRate // ignore: cast_nullable_to_non_nullable
+as int?,habitat: freezed == habitat ? _self.habitat : habitat // ignore: cast_nullable_to_non_nullable
+as HabitatEntity?,hatchCounter: freezed == hatchCounter ? _self.hatchCounter : hatchCounter // ignore: cast_nullable_to_non_nullable
+as int?,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
 
+/// Create a copy of SpeciesEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$EvolutionChainEntityCopyWith<$Res>? get evolutionChain {
+    if (_self.evolutionChain == null) {
+    return null;
+  }
 
+  return $EvolutionChainEntityCopyWith<$Res>(_self.evolutionChain!, (value) {
+    return _then(_self.copyWith(evolutionChain: value));
+  });
+}/// Create a copy of SpeciesEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$HabitatEntityCopyWith<$Res>? get habitat {
+    if (_self.habitat == null) {
+    return null;
+  }
+
+  return $HabitatEntityCopyWith<$Res>(_self.habitat!, (value) {
+    return _then(_self.copyWith(habitat: value));
+  });
+}
 }
 
 // dart format on
