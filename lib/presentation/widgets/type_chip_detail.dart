@@ -23,22 +23,32 @@ class TypeChipDetail extends StatelessWidget {
         border: Border.all(color: chipColor, width: 1.5),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Row(
-        children: [
-          Image.asset(
-            'assets/icons/types/$type.png',
-            width: 14,
-            height: 14,
-            color: chipColor,
-            errorBuilder: (_, __, ___) => const SizedBox(width: 24, height: 24),
-          ),
-          const SizedBox(width: 6),
-          Text(
-            typeLabel,
-            style: AppTheme.appTextStyles.bodySmall.copyWith(color: chipColor),
-          ),
-        ],
-      ),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: Image.asset(
+                        'assets/icons/types/$type.png',
+                        width: 14,
+                        height: 14,
+                        color: chipColor,
+                        errorBuilder: (_, __, ___) => const SizedBox(width: 14, height: 14),
+                      ),
+                    ),
+                  ),
+                  TextSpan(
+                    text: typeLabel,
+                    style: TextStyle(
+                      color: chipColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }

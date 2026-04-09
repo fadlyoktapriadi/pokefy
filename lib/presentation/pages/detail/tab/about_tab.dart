@@ -69,9 +69,9 @@ class AboutTab extends StatelessWidget {
             final maleFlex = (ratio.male * 10).round();
             final femaleFlex = (ratio.female * 10).round();
 
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            return ListView(
+              padding: EdgeInsets.zero,
+              physics: const BouncingScrollPhysics(),
                 children: [
                   Row(
                     children: [
@@ -436,8 +436,7 @@ class AboutTab extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                 ],
-              ),
-            );
+              );
           },
         );
       },

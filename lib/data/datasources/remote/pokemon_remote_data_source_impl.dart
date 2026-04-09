@@ -4,6 +4,7 @@ import 'package:pokefy/data/datasources/remote/pokemon_remote_data_source.dart';
 import 'package:pokefy/data/models/response/pokemon_list_response_dto.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/domain/entity/species/species_entity.dart';
+import 'package:pokefy/domain/entity/type/type_defences_entity.dart';
 
 class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
   final DioClient dioClient;
@@ -41,6 +42,16 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
     try {
       final response = await dioClient.dio.get('/pokemon-species/$id');
       return SpeciesEntity.fromJson(response.data);
+    } catch (e) {
+      throw ServerFailure(message: e.toString());
+    }
+  }
+
+  @override
+  Future<TypeDefencesEntity> getTypeDefences(String name) async {
+    try {
+      final response = await dioClient.dio.get('/type/$name');
+      return TypeDefencesEntity.fromJson(response.data);
     } catch (e) {
       throw ServerFailure(message: e.toString());
     }

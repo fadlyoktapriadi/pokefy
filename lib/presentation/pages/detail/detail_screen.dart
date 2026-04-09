@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
+import 'package:pokefy/presentation/bloc/detail/type_defences/type_defences_bloc.dart';
 import 'package:pokefy/presentation/pages/detail/tab/about_tab.dart';
 import 'package:pokefy/presentation/pages/detail/tab/evolution_tab.dart';
 import 'package:pokefy/presentation/pages/detail/tab/moves_tab.dart';
@@ -19,11 +20,31 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pokemonId = pokemon.id?.toString() ?? '';
+    final typeNames =
+        pokemon.types
+            ?.map((item) => item.type?.name?.toLowerCase().trim())
+            .whereType<String>()
+            .where((name) => name.isNotEmpty)
+            .toList() ??
+        <String>[];
 
-    return BlocProvider(
-      create: (_) =>
-          di.locator<GetSpeciesBloc>()
-            ..add(GetSpeciesEvent.getSpecies(id: pokemonId)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) =>
+              di.locator<GetSpeciesBloc>()
+                ..add(GetSpeciesEvent.getSpecies(id: pokemonId)),
+        ),
+        BlocProvider(
+          create: (_) {
+            final bloc = di.locator<TypeDefencesBloc>();
+            if (typeNames.isNotEmpty) {
+              bloc.add(TypeDefencesEvent.getTypeDefences(names: typeNames));
+            }
+            return bloc;
+          },
+        ),
+      ],
       child: Scaffold(
         body: Stack(
           children: [
@@ -163,7 +184,7 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.61,
+        height: MediaQuery.of(context).size.height * 0.64,
         decoration: BoxDecoration(
           color: AppTheme.appColors.white,
           borderRadius: BorderRadius.only(
@@ -203,7 +224,7 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
       case 0:
         return AboutTab(pokemon: pokemon);
       case 1:
-        return const StatsTab();
+        return StatsTab(stats: pokemon.stats ?? []);
       case 2:
         return const MovesTab();
       case 3:

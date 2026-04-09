@@ -3,6 +3,7 @@ import 'package:pokefy/core/error/failure.dart';
 import 'package:pokefy/data/datasources/remote/pokemon_remote_data_source.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/domain/entity/species/species_entity.dart';
+import 'package:pokefy/domain/entity/type/type_defences_entity.dart';
 import 'package:pokefy/domain/repository/pokemon_repository.dart';
 
 class PokemonRepositoryImpl extends PokemonRepository {
@@ -44,4 +45,16 @@ class PokemonRepositoryImpl extends PokemonRepository {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, TypeDefencesEntity>> getTypeDefences(String name) async {
+    try {
+      final result = await pokemonRemoteDataSource.getTypeDefences(name);
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+
 }
