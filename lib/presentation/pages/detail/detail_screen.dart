@@ -87,7 +87,7 @@ class DetailPokemonImage extends StatelessWidget {
     final imageUrl = pokemon.sprites?.other?.home?.frontDefault;
 
     return Positioned(
-      top: 120,
+      top: 100,
       left: 0,
       right: 0,
       child: Center(
@@ -112,7 +112,7 @@ class DetailHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -126,7 +126,7 @@ class DetailHeader extends StatelessWidget {
               ),
             ),
             Text(
-              capitalize(pokemon.name ?? '-'),
+              capitalize(clearStrip(pokemon.name ?? '-')),
               style: AppTheme.appTextStyles.header2.copyWith(
                 color: AppTheme.appColors.white,
                 letterSpacing: 1.2,
@@ -163,7 +163,7 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.63,
+        height: MediaQuery.of(context).size.height * 0.61,
         decoration: BoxDecoration(
           color: AppTheme.appColors.white,
           borderRadius: BorderRadius.only(

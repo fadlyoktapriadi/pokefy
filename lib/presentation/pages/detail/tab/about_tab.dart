@@ -128,7 +128,7 @@ class AboutTab extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: Colors.white.withValues(alpha: 0.8),
                                 border: Border.all(
-                                  color: AppTheme.appColors.black,
+                                  color: AppTheme.appColors.primary,
                                   width: 1.5,
                                 ),
                                 borderRadius: BorderRadius.circular(20),
@@ -170,7 +170,7 @@ class AboutTab extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: Colors.white.withValues(alpha: 0.8),
                                 border: Border.all(
-                                  color: AppTheme.appColors.black,
+                                  color: AppTheme.appColors.secondary,
                                   width: 1.5,
                                 ),
                                 borderRadius: BorderRadius.circular(20),
@@ -217,7 +217,7 @@ class AboutTab extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.8),
                             border: Border.all(
-                              color: AppTheme.appColors.black,
+                              color: AppTheme.appColors.warning,
                               width: 1.5,
                             ),
                             borderRadius: BorderRadius.circular(20),
@@ -255,7 +255,7 @@ class AboutTab extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.8),
                       border: Border.all(
-                        color: AppTheme.appColors.black,
+                        color: AppTheme.appColors.success,
                         width: 1.5,
                       ),
                       borderRadius: BorderRadius.circular(20),
@@ -386,7 +386,7 @@ class AboutTab extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.8),
                             border: Border.all(
-                              color: AppTheme.appColors.black,
+                              color: AppTheme.appColors.danger,
                               width: 1.5,
                             ),
                             borderRadius: BorderRadius.circular(20),
@@ -424,7 +424,7 @@ class AboutTab extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.8),
                       border: Border.all(
-                        color: AppTheme.appColors.black,
+                        color: AppTheme.appColors.secondary,
                         width: 1.5,
                       ),
                       borderRadius: BorderRadius.circular(20),
