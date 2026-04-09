@@ -5,9 +5,11 @@ import 'package:pokefy/data/datasources/remote/pokemon_remote_data_source_impl.d
 import 'package:pokefy/data/repository/pokemon_repository_impl.dart';
 import 'package:pokefy/domain/repository/pokemon_repository.dart';
 import 'package:pokefy/domain/usecase/get_detail_pokemon_use_case.dart';
+import 'package:pokefy/domain/usecase/get_evolution_chain_use_case.dart';
 import 'package:pokefy/domain/usecase/get_list_pokemon_use_case.dart';
 import 'package:pokefy/domain/usecase/get_species_pokemon_use_case.dart';
 import 'package:pokefy/domain/usecase/get_type_defences_use_case.dart';
+import 'package:pokefy/presentation/bloc/detail/evolution/evolution_chain_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/type_defences/type_defences_bloc.dart';
 import 'package:pokefy/presentation/bloc/home/get_pokemon_bloc.dart';
@@ -19,11 +21,13 @@ void init() {
   locator.registerFactory(() => GetPokemonBloc(locator(), locator()));
   locator.registerFactory(() => GetSpeciesBloc(locator()));
   locator.registerFactory(() => TypeDefencesBloc(locator()));
+  locator.registerFactory(() => EvolutionChainBloc(locator()));
 
   locator.registerLazySingleton(() => GetListPokemonUseCase(locator()));
   locator.registerLazySingleton(() => GetDetailPokemonUseCase(locator()));
   locator.registerLazySingleton(() => GetSpeciesPokemonUseCase(locator()));
   locator.registerLazySingleton(() => GetTypeDefencesUseCase(locator()));
+  locator.registerLazySingleton(() => GetEvolutionChainUseCase(locator()));
 
   locator.registerLazySingleton<PokemonRepository>(
     () => PokemonRepositoryImpl(pokemonRemoteDataSource: locator()),

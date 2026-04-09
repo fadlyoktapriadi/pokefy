@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
+import 'package:pokefy/presentation/bloc/detail/evolution/evolution_chain_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/type_defences/type_defences_bloc.dart';
 import 'package:pokefy/presentation/pages/detail/tab/about_tab.dart';
@@ -44,15 +45,35 @@ class DetailScreen extends StatelessWidget {
             return bloc;
           },
         ),
+        BlocProvider(create: (_) => di.locator<EvolutionChainBloc>()),
       ],
-      child: Scaffold(
-        body: Stack(
-          children: [
-            DetailBackground(pokemon: pokemon),
-            DetailBottomPanel(pokemon: pokemon),
-            DetailPokemonImage(pokemon: pokemon),
-            DetailHeader(pokemon: pokemon),
-          ],
+      child: BlocListener<GetSpeciesBloc, GetSpeciesState>(
+        listener: (context, state) {
+          state.maybeWhen(
+            orElse: () {},
+            loaded: (species) {
+              final evolutionChainUrl = species.evolutionChain?.url;
+              if (evolutionChainUrl != null && evolutionChainUrl.isNotEmpty) {
+                final evolutionChainId = evolutionChainUrl
+                    .split('/')
+                    .where((part) => part.isNotEmpty)
+                    .last;
+                context.read<EvolutionChainBloc>().add(
+                  EvolutionChainEvent.getEvolutionChain(id: evolutionChainId),
+                );
+              }
+            },
+          );
+        },
+        child: Scaffold(
+          body: Stack(
+            children: [
+              DetailBackground(pokemon: pokemon),
+              DetailBottomPanel(pokemon: pokemon),
+              DetailPokemonImage(pokemon: pokemon),
+              DetailHeader(pokemon: pokemon),
+            ],
+          ),
         ),
       ),
     );
@@ -177,7 +198,7 @@ class DetailBottomPanel extends StatefulWidget {
 
 class _DetailBottomPanelState extends State<DetailBottomPanel> {
   int _selectedTabIndex = 0;
-  final List<String> _tabs = ['ABOUT', 'STATS', 'MOVES', 'EVOLUTIONS'];
+  final List<String> _tabs = ['ABOUT', 'STATS', 'EVOLUTIONS', 'MOVES'];
 
   @override
   Widget build(BuildContext context) {
@@ -226,9 +247,9 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
       case 1:
         return StatsTab(stats: pokemon.stats ?? []);
       case 2:
-        return const MovesTab();
-      case 3:
         return const EvolutionTab();
+      case 3:
+        return const MovesTab();
       default:
         return const SizedBox.shrink();
     }
