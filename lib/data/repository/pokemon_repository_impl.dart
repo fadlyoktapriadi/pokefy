@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:pokefy/core/error/failure.dart';
 import 'package:pokefy/data/datasources/remote/pokemon_remote_data_source.dart';
 import 'package:pokefy/domain/entity/evolution_chain/evolution_chain_entity.dart';
+import 'package:pokefy/domain/entity/move/move_detail_entity.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/domain/entity/species/species_entity.dart';
 import 'package:pokefy/domain/entity/type/type_defences_entity.dart';
@@ -71,6 +72,16 @@ class PokemonRepositoryImpl extends PokemonRepository {
   ) async {
     try {
       final result = await pokemonRemoteDataSource.getEvolutionChain(id);
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, MoveDetailEntity>> getMoveDetail(String id) async {
+    try {
+      final result = await pokemonRemoteDataSource.getMoveDetail(id);
       return Right(result);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

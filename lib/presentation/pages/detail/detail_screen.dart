@@ -5,6 +5,7 @@ import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/bloc/detail/evolution/evolution_chain_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/type_defences/type_defences_bloc.dart';
+import 'package:pokefy/presentation/bloc/detail/move/get_move_bloc.dart';
 import 'package:pokefy/presentation/pages/detail/tab/about_tab.dart';
 import 'package:pokefy/presentation/pages/detail/tab/evolution_tab.dart';
 import 'package:pokefy/presentation/pages/detail/tab/moves_tab.dart';
@@ -46,6 +47,11 @@ class DetailScreen extends StatelessWidget {
           },
         ),
         BlocProvider(create: (_) => di.locator<EvolutionChainBloc>()),
+        BlocProvider(
+          create: (_) =>
+              di.locator<GetMoveBloc>()
+                ..add(GetMoveEvent.getMoves(pokemon.moves ?? [])),
+        ),
       ],
       child: BlocListener<GetSpeciesBloc, GetSpeciesState>(
         listener: (context, state) {
@@ -198,14 +204,14 @@ class DetailBottomPanel extends StatefulWidget {
 
 class _DetailBottomPanelState extends State<DetailBottomPanel> {
   int _selectedTabIndex = 0;
-  final List<String> _tabs = ['ABOUT', 'STATS', 'EVOLUTIONS', 'MOVES'];
+  final List<String> _tabs = ['ABOUT', 'STATS', 'MOVES', 'EVOLUTIONS' ];
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.64,
+        height: MediaQuery.of(context).size.height * 0.615,
         decoration: BoxDecoration(
           color: AppTheme.appColors.white,
           borderRadius: BorderRadius.only(
@@ -247,9 +253,9 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
       case 1:
         return StatsTab(stats: pokemon.stats ?? []);
       case 2:
-        return const EvolutionTab();
+        return MovesTab(pokemon: pokemon);
       case 3:
-        return const MovesTab();
+        return const EvolutionTab();
       default:
         return const SizedBox.shrink();
     }

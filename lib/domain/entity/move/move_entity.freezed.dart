@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MoveEntity {
 
-@JsonKey(name: "move") SpeciesEntity? get move;@JsonKey(name: "version_group_details") List<VersionGroupDetailEntity>? get versionGroupDetails;
+@JsonKey(name: "move") MoveInfoEntity? get move;@JsonKey(name: "version_group_details") List<VersionGroupDetailEntity>? get versionGroupDetails;
 /// Create a copy of MoveEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,11 +48,11 @@ abstract mixin class $MoveEntityCopyWith<$Res>  {
   factory $MoveEntityCopyWith(MoveEntity value, $Res Function(MoveEntity) _then) = _$MoveEntityCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: "move") SpeciesEntity? move,@JsonKey(name: "version_group_details") List<VersionGroupDetailEntity>? versionGroupDetails
+@JsonKey(name: "move") MoveInfoEntity? move,@JsonKey(name: "version_group_details") List<VersionGroupDetailEntity>? versionGroupDetails
 });
 
 
-$SpeciesEntityCopyWith<$Res>? get move;
+$MoveInfoEntityCopyWith<$Res>? get move;
 
 }
 /// @nodoc
@@ -68,7 +68,7 @@ class _$MoveEntityCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? move = freezed,Object? versionGroupDetails = freezed,}) {
   return _then(_self.copyWith(
 move: freezed == move ? _self.move : move // ignore: cast_nullable_to_non_nullable
-as SpeciesEntity?,versionGroupDetails: freezed == versionGroupDetails ? _self.versionGroupDetails : versionGroupDetails // ignore: cast_nullable_to_non_nullable
+as MoveInfoEntity?,versionGroupDetails: freezed == versionGroupDetails ? _self.versionGroupDetails : versionGroupDetails // ignore: cast_nullable_to_non_nullable
 as List<VersionGroupDetailEntity>?,
   ));
 }
@@ -76,12 +76,12 @@ as List<VersionGroupDetailEntity>?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$SpeciesEntityCopyWith<$Res>? get move {
+$MoveInfoEntityCopyWith<$Res>? get move {
     if (_self.move == null) {
     return null;
   }
 
-  return $SpeciesEntityCopyWith<$Res>(_self.move!, (value) {
+  return $MoveInfoEntityCopyWith<$Res>(_self.move!, (value) {
     return _then(_self.copyWith(move: value));
   });
 }
@@ -166,7 +166,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "move")  SpeciesEntity? move, @JsonKey(name: "version_group_details")  List<VersionGroupDetailEntity>? versionGroupDetails)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "move")  MoveInfoEntity? move, @JsonKey(name: "version_group_details")  List<VersionGroupDetailEntity>? versionGroupDetails)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MoveEntity() when $default != null:
 return $default(_that.move,_that.versionGroupDetails);case _:
@@ -187,7 +187,7 @@ return $default(_that.move,_that.versionGroupDetails);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "move")  SpeciesEntity? move, @JsonKey(name: "version_group_details")  List<VersionGroupDetailEntity>? versionGroupDetails)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "move")  MoveInfoEntity? move, @JsonKey(name: "version_group_details")  List<VersionGroupDetailEntity>? versionGroupDetails)  $default,) {final _that = this;
 switch (_that) {
 case _MoveEntity():
 return $default(_that.move,_that.versionGroupDetails);case _:
@@ -207,7 +207,7 @@ return $default(_that.move,_that.versionGroupDetails);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "move")  SpeciesEntity? move, @JsonKey(name: "version_group_details")  List<VersionGroupDetailEntity>? versionGroupDetails)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "move")  MoveInfoEntity? move, @JsonKey(name: "version_group_details")  List<VersionGroupDetailEntity>? versionGroupDetails)?  $default,) {final _that = this;
 switch (_that) {
 case _MoveEntity() when $default != null:
 return $default(_that.move,_that.versionGroupDetails);case _:
@@ -225,7 +225,7 @@ class _MoveEntity implements MoveEntity {
   const _MoveEntity({@JsonKey(name: "move") this.move, @JsonKey(name: "version_group_details") final  List<VersionGroupDetailEntity>? versionGroupDetails}): _versionGroupDetails = versionGroupDetails;
   factory _MoveEntity.fromJson(Map<String, dynamic> json) => _$MoveEntityFromJson(json);
 
-@override@JsonKey(name: "move") final  SpeciesEntity? move;
+@override@JsonKey(name: "move") final  MoveInfoEntity? move;
  final  List<VersionGroupDetailEntity>? _versionGroupDetails;
 @override@JsonKey(name: "version_group_details") List<VersionGroupDetailEntity>? get versionGroupDetails {
   final value = _versionGroupDetails;
@@ -269,11 +269,11 @@ abstract mixin class _$MoveEntityCopyWith<$Res> implements $MoveEntityCopyWith<$
   factory _$MoveEntityCopyWith(_MoveEntity value, $Res Function(_MoveEntity) _then) = __$MoveEntityCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: "move") SpeciesEntity? move,@JsonKey(name: "version_group_details") List<VersionGroupDetailEntity>? versionGroupDetails
+@JsonKey(name: "move") MoveInfoEntity? move,@JsonKey(name: "version_group_details") List<VersionGroupDetailEntity>? versionGroupDetails
 });
 
 
-@override $SpeciesEntityCopyWith<$Res>? get move;
+@override $MoveInfoEntityCopyWith<$Res>? get move;
 
 }
 /// @nodoc
@@ -289,7 +289,7 @@ class __$MoveEntityCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? move = freezed,Object? versionGroupDetails = freezed,}) {
   return _then(_MoveEntity(
 move: freezed == move ? _self.move : move // ignore: cast_nullable_to_non_nullable
-as SpeciesEntity?,versionGroupDetails: freezed == versionGroupDetails ? _self._versionGroupDetails : versionGroupDetails // ignore: cast_nullable_to_non_nullable
+as MoveInfoEntity?,versionGroupDetails: freezed == versionGroupDetails ? _self._versionGroupDetails : versionGroupDetails // ignore: cast_nullable_to_non_nullable
 as List<VersionGroupDetailEntity>?,
   ));
 }
@@ -298,12 +298,12 @@ as List<VersionGroupDetailEntity>?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$SpeciesEntityCopyWith<$Res>? get move {
+$MoveInfoEntityCopyWith<$Res>? get move {
     if (_self.move == null) {
     return null;
   }
 
-  return $SpeciesEntityCopyWith<$Res>(_self.move!, (value) {
+  return $MoveInfoEntityCopyWith<$Res>(_self.move!, (value) {
     return _then(_self.copyWith(move: value));
   });
 }

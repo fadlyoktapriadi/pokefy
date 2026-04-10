@@ -168,6 +168,7 @@ class StatsTab extends StatelessWidget {
           ],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: double.infinity,
@@ -187,7 +188,7 @@ class StatsTab extends StatelessWidget {
             ),
             if (types.isEmpty)
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                padding: const EdgeInsets.symmetric(vertical: 12.0, ),
                 child: Text(
                   'None',
                   style: AppTheme.appTextStyles.bodySmall.copyWith(
@@ -197,7 +198,7 @@ class StatsTab extends StatelessWidget {
               )
             else
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4.0),
+              padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
               child: Wrap(
                 spacing: 8,
                 runSpacing: 8,
