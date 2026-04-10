@@ -36,6 +36,9 @@ _ChainEvolutionEntity _$ChainEvolutionEntityFromJson(
   species: json['species'] == null
       ? null
       : SpeciesEntity.fromJson(json['species'] as Map<String, dynamic>),
+  pokemon: json['pokemon'] == null
+      ? null
+      : PokemonEntity.fromJson(json['pokemon'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$ChainEvolutionEntityToJson(
@@ -44,6 +47,7 @@ Map<String, dynamic> _$ChainEvolutionEntityToJson(
   'evolution_details': instance.evolutionDetails,
   'evolves_to': instance.evolvesTo,
   'species': instance.species,
+  'pokemon': instance.pokemon,
 };
 
 _EvolutionDetailEntity _$EvolutionDetailEntityFromJson(

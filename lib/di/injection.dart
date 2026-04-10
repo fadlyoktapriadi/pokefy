@@ -21,7 +21,7 @@ void init() {
   locator.registerFactory(() => GetPokemonBloc(locator(), locator()));
   locator.registerFactory(() => GetSpeciesBloc(locator()));
   locator.registerFactory(() => TypeDefencesBloc(locator()));
-  locator.registerFactory(() => EvolutionChainBloc(locator()));
+  locator.registerFactory(() => EvolutionChainBloc(locator(), locator()));
 
   locator.registerLazySingleton(() => GetListPokemonUseCase(locator()));
   locator.registerLazySingleton(() => GetDetailPokemonUseCase(locator()));

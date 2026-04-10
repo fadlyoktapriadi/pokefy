@@ -25,8 +25,9 @@ abstract class SpeciesEntity with _$SpeciesEntity {
     int? id,
     @JsonKey(name: "name")
     String? name,
+    @JsonKey(name: "url")
+    String? url,
   }) = _SpeciesEntity;
 
   factory SpeciesEntity.fromJson(Map<String, dynamic> json) => _$SpeciesEntityFromJson(json);
 }
-

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 
 import 'package:pokefy/domain/entity/species/species_entity.dart';
 
@@ -28,6 +29,8 @@ abstract class ChainEvolutionEntity with _$ChainEvolutionEntity {
     List<ChainEvolutionEntity>? evolvesTo,
     @JsonKey(name: "species")
     SpeciesEntity? species,
+    @JsonKey(name: "pokemon")
+    PokemonEntity? pokemon,
   }) = _ChainEvolutionEntity;
 
   factory ChainEvolutionEntity.fromJson(Map<String, dynamic> json) => _$ChainEvolutionEntityFromJson(json);

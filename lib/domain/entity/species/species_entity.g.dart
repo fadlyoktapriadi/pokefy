@@ -23,6 +23,7 @@ _SpeciesEntity _$SpeciesEntityFromJson(Map<String, dynamic> json) =>
       hatchCounter: (json['hatch_counter'] as num?)?.toInt(),
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
+      url: json['url'] as String?,
     );
 
 Map<String, dynamic> _$SpeciesEntityToJson(_SpeciesEntity instance) =>
@@ -34,4 +35,5 @@ Map<String, dynamic> _$SpeciesEntityToJson(_SpeciesEntity instance) =>
       'hatch_counter': instance.hatchCounter,
       'id': instance.id,
       'name': instance.name,
+      'url': instance.url,
     };
