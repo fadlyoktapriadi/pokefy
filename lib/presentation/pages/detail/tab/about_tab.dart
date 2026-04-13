@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pokefy/domain/entity/gender/GenderRatioEntity.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
@@ -58,7 +59,7 @@ class AboutTab extends StatelessWidget {
     return BlocBuilder<GetSpeciesBloc, GetSpeciesState>(
       builder: (context, state) {
         return state.when(
-          initial: () => const SizedBox.shrink(),
+          initial: () => SizedBox.shrink(),
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (message) => Text(
             'Failed to load: $message',
@@ -77,15 +78,15 @@ class AboutTab extends StatelessWidget {
                   children: [
                     Image.asset(
                       'assets/icons/ic_pokemon.png',
-                      width: 14,
-                      height: 14,
+                      width: 14.w,
+                      height: 14.h,
                       color: AppTheme.appColors.black,
                     ),
-                    const SizedBox(width: 6),
+                    SizedBox(width: 6.w),
                     Text('Types', style: AppTheme.appTextStyles.bodyMedium),
                   ],
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: 6.h),
                 Row(
                   spacing: 5,
                   children: [
@@ -99,7 +100,7 @@ class AboutTab extends StatelessWidget {
                         ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Row(
                   children: [
                     Expanded(
@@ -110,18 +111,18 @@ class AboutTab extends StatelessWidget {
                             children: [
                               Image.asset(
                                 'assets/icons/ic_weight.png',
-                                width: 14,
-                                height: 14,
+                                width: 14.w,
+                                height: 14.h,
                                 color: AppTheme.appColors.black,
                               ),
-                              const SizedBox(width: 6),
+                               SizedBox(width: 6.w),
                               Text(
                                 'Weight',
                                 style: AppTheme.appTextStyles.bodyMedium,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 6),
+                           SizedBox(height: 6.h),
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(10.0),
@@ -143,7 +144,7 @@ class AboutTab extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12.w),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,18 +153,18 @@ class AboutTab extends StatelessWidget {
                             children: [
                               Image.asset(
                                 'assets/icons/ic_height.png',
-                                width: 14,
-                                height: 14,
+                                width: 14.w,
+                                height: 14.h,
                                 color: AppTheme.appColors.black,
                               ),
-                              const SizedBox(width: 6),
+                              SizedBox(width: 6.w),
                               Text(
                                 'Height',
                                 style: AppTheme.appTextStyles.bodyMedium,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8.h),
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(10.0),
@@ -187,7 +188,7 @@ class AboutTab extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Row(
                   children: [
                     Image.asset(
@@ -196,20 +197,20 @@ class AboutTab extends StatelessWidget {
                       height: 14,
                       color: AppTheme.appColors.black,
                     ),
-                    const SizedBox(width: 6),
+                    SizedBox(width: 6.w),
                     Text('Abilities', style: AppTheme.appTextStyles.bodyMedium),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
                   children: [
                     ...(pokemon.abilities ?? []).map(
                       (ability) => Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 24,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8.h,
+                          horizontal: 24.w,
                         ),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.8),
@@ -229,20 +230,20 @@ class AboutTab extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Row(
                   children: [
                     Image.asset(
                       'assets/icons/ic_habitat.png',
-                      width: 14,
-                      height: 14,
+                      width: 14.w,
+                      height: 14.h,
                       color: AppTheme.appColors.black,
                     ),
-                    const SizedBox(width: 6),
+                     SizedBox(width: 6.w),
                     Text('Habitat', style: AppTheme.appTextStyles.bodyMedium),
                   ],
                 ),
-                const SizedBox(height: 8),
+                 SizedBox(height: 8.h),
                 Wrap(
                   children: [
                     Container(
@@ -267,31 +268,31 @@ class AboutTab extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: 14.h),
                 Text(
                   "Breeding",
                   style: AppTheme.appTextStyles.header3.copyWith(
                     letterSpacing: 0.8,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
                       'assets/icons/ic_gender_ratio.png',
-                      width: 14,
-                      height: 14,
+                      width: 14.w,
+                      height: 14.h,
                       color: AppTheme.appColors.black,
                     ),
-                    const SizedBox(width: 6),
+                    SizedBox(width: 6.w),
                     Text(
                       'Gender Rate',
                       style: AppTheme.appTextStyles.bodyMedium,
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 if (ratio.genderless)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,12 +300,12 @@ class AboutTab extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Container(
-                          height: 10,
+                          height: 10.h,
                           width: double.infinity,
                           color: AppTheme.appColors.grey,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: 6.h),
                       Text(
                         'Genderless',
                         style: AppTheme.appTextStyles.bodySmall,
@@ -318,7 +319,7 @@ class AboutTab extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: SizedBox(
-                          height: 10,
+                          height: 10.h,
                           width: double.infinity,
                           child: Row(
                             children: [
@@ -340,7 +341,7 @@ class AboutTab extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: 6.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -356,32 +357,32 @@ class AboutTab extends StatelessWidget {
                       ),
                     ],
                   ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Row(
                   children: [
                     Image.asset(
                       'assets/icons/ic_egg.png',
-                      width: 14,
-                      height: 14,
+                      width: 14.w,
+                      height: 14.h,
                       color: AppTheme.appColors.black,
                     ),
-                    const SizedBox(width: 6),
+                    SizedBox(width: 6.h),
                     Text(
                       'Egg Groups',
                       style: AppTheme.appTextStyles.bodyMedium,
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
                   children: [
                     ...(species.eggGroups ?? []).map(
                       (egg) => Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 24,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8.h,
+                          horizontal: 24.w,
                         ),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.8),
@@ -399,26 +400,26 @@ class AboutTab extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Row(
                   children: [
                     Image.asset(
                       'assets/icons/ic_hatch.png',
-                      width: 14,
-                      height: 14,
+                      width: 14.w,
+                      height: 14.h,
                       color: AppTheme.appColors.black,
                     ),
-                    const SizedBox(width: 6),
+                    SizedBox(width: 6.w),
                     Text('Egg Cycle', style: AppTheme.appTextStyles.bodyMedium),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Wrap(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8,
-                        horizontal: 24,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 8.h,
+                        horizontal: 24.w,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.8),
@@ -435,7 +436,7 @@ class AboutTab extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
               ],
             );
           },

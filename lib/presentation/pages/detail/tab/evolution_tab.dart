@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pokefy/domain/entity/evolution_chain/evolution_chain_entity.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/bloc/detail/evolution/evolution_chain_bloc.dart';
@@ -15,12 +16,12 @@ class EvolutionTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Evolution Chain', style: AppTheme.appTextStyles.header3),
-        const SizedBox(height: 14),
+        SizedBox(height: 14.h),
         Expanded(
           child: BlocBuilder<EvolutionChainBloc, EvolutionChainState>(
             builder: (context, state) {
               return state.maybeWhen(
-                orElse: () => const SizedBox.shrink(),
+                orElse: () => SizedBox.shrink(),
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (message) =>
                     Center(child: Text('Failed to load: $message', style: AppTheme.appTextStyles.bodyMedium)),
@@ -101,7 +102,7 @@ class EvolutionTab extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             if ((nextEvolution.evolvesTo as List<dynamic>? ?? []).isNotEmpty)
               _buildEvolutionChain(nextEvolution),
           ],
@@ -122,8 +123,8 @@ class PokemonImageWidget extends StatelessWidget {
 
     return Image.network(
       imageUrl,
-      width: 100,
-      height: 100,
+      width: 100.w,
+      height: 100.h,
       fit: BoxFit.contain,
       errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
     );

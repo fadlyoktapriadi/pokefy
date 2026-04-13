@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/bloc/connectivity/connectivity_cubit.dart';
@@ -151,13 +153,72 @@ class DetailPokemonImage extends StatelessWidget {
       left: 0,
       right: 0,
       child: Center(
-        child: imageUrl == null || imageUrl.isEmpty
-            ? Image.asset(
-                'assets/images/image_failed.png',
-                height: 280,
-                fit: BoxFit.contain,
-              )
-            : Image.network(imageUrl, height: 280, fit: BoxFit.contain),
+        child: Hero(
+          tag: "pokemon_${pokemon.id}",
+          flightShuttleBuilder:
+              (
+                BuildContext flightContext,
+                Animation<double> animation,
+                HeroFlightDirection flightDirection,
+                BuildContext fromHeroContext,
+                BuildContext toHeroContext,
+              ) {
+                final fromHero = fromHeroContext.widget as Hero;
+                final toHero = toHeroContext.widget as Hero;
+
+                final shuttleChild = flightDirection == HeroFlightDirection.push
+                    ? toHero.child
+                    : fromHero.child;
+
+                return AnimatedBuilder(
+                  animation: animation,
+                  child: shuttleChild,
+                  builder: (context, child) {
+                    final curved = Curves.easeInOut.transform(animation.value);
+                    final scale = Tween<double>(
+                      begin: 0.96,
+                      end: 1.0,
+                    ).transform(curved);
+                    final opacity = Tween<double>(
+                      begin: 0.9,
+                      end: 1.0,
+                    ).transform(curved);
+
+                    return Material(
+                      type: MaterialType.transparency,
+                      child: Opacity(
+                        opacity: opacity,
+                        child: Transform.scale(scale: scale, child: child),
+                      ),
+                    );
+                  },
+                );
+              },
+          child: imageUrl == null || imageUrl.isEmpty
+              ? Image.asset(
+                  'assets/images/image_failed.png',
+                  height: 280.h,
+                  fit: BoxFit.contain,
+                )
+              : CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  height: 280.h,
+                  fit: BoxFit.contain,
+                  fadeInDuration: Duration.zero,
+                  fadeOutDuration: Duration.zero,
+                  placeholder: (context, url) => SizedBox(
+                    height: 280.h,
+                    child: Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/images/image_failed.png',
+                    height: 280.h,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+        ),
       ),
     );
   }
@@ -172,7 +233,7 @@ class DetailHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -180,16 +241,25 @@ class DetailHeader extends StatelessWidget {
               onPressed: () => Navigator.pop(context),
               icon: Image.asset(
                 'assets/icons/ic_back.png',
-                width: 28,
-                height: 28,
+                width: 28.w,
+                height: 28.h,
                 color: Colors.white,
               ),
             ),
-            Text(
-              capitalize(clearStrip(pokemon.name ?? '-')),
-              style: AppTheme.appTextStyles.header2.copyWith(
-                color: AppTheme.appColors.white,
-                letterSpacing: 1.2,
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Text(
+                  capitalize(clearStrip(pokemon.name ?? '-')),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: AppTheme.appTextStyles.header2.copyWith(
+                    color: AppTheme.appColors.white,
+                    letterSpacing: 1.2,
+                  ),
+                ),
               ),
             ),
             BlocBuilder<FavoritePokemonBloc, FavoritePokemonState>(
@@ -208,13 +278,13 @@ class DetailHeader extends StatelessWidget {
                   icon: isFavorite
                       ? Image.asset(
                           'assets/icons/ic_favorited.png',
-                          width: 28,
-                          height: 28,
+                          width: 28.w,
+                          height: 28.h,
                         )
                       : Image.asset(
                           'assets/icons/ic_favorite.png',
-                          width: 28,
-                          height: 28,
+                          width: 28.w,
+                          height: 28.h,
                           color: Colors.white,
                         ),
                 );
@@ -242,10 +312,17 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final panelHeightFactor = screenHeight >= 900
+        ? 0.64
+        : screenHeight >= 700
+        ? 0.615
+        : 0.59;
+
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.615,
+        height: screenHeight * panelHeightFactor,
         decoration: BoxDecoration(
           color: AppTheme.appColors.white,
           borderRadius: BorderRadius.only(
@@ -253,11 +330,11 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
             topRight: Radius.circular(40),
           ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 58),
+            SizedBox(height: 58.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(_tabs.length, (index) {
@@ -272,7 +349,7 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
                 );
               }),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             Expanded(child: _buildTabContent(widget.pokemon)),
             BlocBuilder<ConnectivityCubit, ConnectivityState>(
               builder: (context, state) {
@@ -287,11 +364,12 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(Icons.warning, color: Colors.white),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8.w),
                         Text(
                           "No Internet Connection",
-                          style: AppTheme.appTextStyles.bodySmall
-                              .copyWith(color: Colors.white),
+                          style: AppTheme.appTextStyles.bodySmall.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),
@@ -299,7 +377,7 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
                   orElse: () => const SizedBox.shrink(),
                 );
               },
-            )
+            ),
           ],
         ),
       ),
@@ -350,11 +428,11 @@ class DetailTab extends StatelessWidget {
                     ? AppTheme.appColors.black
                     : AppTheme.appColors.grey,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                fontSize: 13,
+                fontSize: 13.sp,
                 letterSpacing: 0.5,
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: 6.h),
             if (isSelected)
               Container(
                 width: 5,
@@ -365,7 +443,7 @@ class DetailTab extends StatelessWidget {
                 ),
               )
             else
-              const SizedBox(height: 5),
+              SizedBox(height: 5.h),
           ],
         ),
       ),

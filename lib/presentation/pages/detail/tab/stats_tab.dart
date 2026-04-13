@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pokefy/domain/entity/stat/stat_entity.dart';
 import 'package:pokefy/presentation/bloc/detail/type_defences/type_defences_bloc.dart';
 import 'package:pokefy/presentation/widgets/type_chip_detail.dart';
@@ -46,9 +47,9 @@ class StatsTab extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24.h),
         Text('Type Defences', style: AppTheme.appTextStyles.header3),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         BlocBuilder<TypeDefencesBloc, TypeDefencesState>(
           builder: (context, state) {
             return state.when(
@@ -77,19 +78,19 @@ class StatsTab extends StatelessWidget {
                       types: strengths,
                       chipColor: AppTheme.appColors.secondary,
                     ),
-                    SizedBox(height: 6),
+                    SizedBox(height: 6.h),
                     _buildDefenceGroup(
                       title: 'Weaknesses To',
                       types: vulnerability,
                       chipColor: AppTheme.appColors.primary,
                     ),
-                    SizedBox(height: 6),
+                    SizedBox(height: 6.h),
                     _buildDefenceGroup(
                       title: 'Resistances To',
                       types: resistances,
                       chipColor: AppTheme.appColors.warning,
                     ),
-                    SizedBox(height: 6),
+                    SizedBox(height: 6.h),
                     _buildDefenceGroup(
                       title: 'Immunities To',
                       types: immunities,
@@ -109,14 +110,14 @@ class StatsTab extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          width: 105,
+          width: 105.w,
           child: Text(
             capitalize(title.replaceFirst('special-', 'Sp.')),
             style: AppTheme.appTextStyles.bodyMedium,
           ),
         ),
         SizedBox(
-          width: 35,
+          width: 35.w,
           child: Text(
             value.toString(),
             style: AppTheme.appTextStyles.bodySmall.copyWith(
@@ -126,14 +127,14 @@ class StatsTab extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            height: 6,
+            height: 6.h,
             decoration: BoxDecoration(
               color: AppTheme.appColors.softGrey,
               borderRadius: BorderRadius.circular(30),
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
-              widthFactor: value / 195,
+              widthFactor: value / 195.w,
               child: Container(
                 decoration: BoxDecoration(
                   color: barColor,
@@ -172,7 +173,7 @@ class StatsTab extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              padding: EdgeInsets.symmetric(vertical: 10.h),
               decoration: BoxDecoration(
                 color: chipColor,
                 borderRadius: BorderRadius.circular(8),
@@ -188,7 +189,7 @@ class StatsTab extends StatelessWidget {
             ),
             if (types.isEmpty)
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0, ),
+                padding: EdgeInsets.symmetric(vertical: 12.h),
                 child: Center(
                   child: Text(
                     'None',
@@ -200,7 +201,7 @@ class StatsTab extends StatelessWidget {
               )
             else
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
               child: Wrap(
                 spacing: 8,
                 runSpacing: 8,

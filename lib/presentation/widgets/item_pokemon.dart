@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/widgets/type_chip.dart';
@@ -35,9 +35,9 @@ class ItemPokemon extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: 165,
+                height: 165.h,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35),
+                  borderRadius: BorderRadius.circular(35.w),
                   gradient: LinearGradient(
                     stops: const [0.6, 1.0],
                     colors: [baseColor, AppTheme.appColors.white],
@@ -49,54 +49,59 @@ class ItemPokemon extends StatelessWidget {
             ),
             Column(
               children: [
-                (imageUrl == null || imageUrl.isEmpty)
-                    ? Image.asset(
-                        'assets/images/image_failed.png',
-                        width: 130,
-                        height: 130,
-                      )
-                    : CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        width: 130,
-                        height: 130,
-                        fit: BoxFit.contain,
-                        placeholder: (context, url) => const SizedBox(
-                          width: 130,
-                          height: 130,
-                          child: Center(
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          ),
-                        ),
-                        errorWidget: (context, url, error) => Image.asset(
-                          'assets/images/image_failed.png',
-                          width: 130,
-                          height: 130,
-                        ),
-                      ),
-
-                const SizedBox(height: 12),
-                Text(
-                  capitalize(pokemonName),
-                  style: AppTheme.appTextStyles.header3.copyWith(
+                Hero(
+                  tag: "pokemon_${pokemon.id}",
+                  child: (imageUrl == null || imageUrl.isEmpty)
+                      ? Image.asset(
+                    'assets/images/image_failed.png',
+                    width: 110.w,
+                    height: 110.h,
                     color: AppTheme.appColors.white,
+                  )
+                      : CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    width: 130.w,
+                    height: 130.h,
+                    fit: BoxFit.contain,
+                    placeholder: (context, url) => SizedBox(
+                      width: 130.w,
+                      height: 130.h,
+                      child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                    ),
+                    fadeInDuration: Duration.zero,
+                    fadeOutDuration: Duration.zero,
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/images/image_failed.png',
+                      width: 130.w,
+                      height: 130.h,
+                      color: AppTheme.appColors.white,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 6),
+
+                SizedBox(height: 12.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.h),
+                  child: Text(
+                    capitalize(clearStrip(pokemonName)),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                    textAlign: TextAlign.center,
+                    style: AppTheme.appTextStyles.header3.copyWith(
+                      color: AppTheme.appColors.white,
+                    ),
+                  ),
+                ),
+                 SizedBox(height: 6.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ...typeNames.take(2).map(
                       (type) => Padding(
-                        padding: const EdgeInsets.only(right: 4),
+                        padding: EdgeInsets.only(right: 4.w),
                         child: TypeChip(type: type),
                       ),
-                    ),
-                    SvgPicture.asset(
-                      pokemon.sprites?.frontFemale != null
-                          ? 'assets/icons/ic_female.svg'
-                          : 'assets/icons/ic_male.svg',
-                      width: 26,
-                      height: 26,
                     ),
                   ],
                 ),

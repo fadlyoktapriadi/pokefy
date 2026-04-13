@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/presentation/bloc/connectivity/connectivity_cubit.dart';
@@ -60,9 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 8.0,
-                horizontal: 18.0,
+              padding: EdgeInsets.symmetric(
+                vertical: 8.h,
+                horizontal: 18.w,
               ),
               child: Column(
                 children: [
@@ -76,14 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         icon: Image.asset(
                           "assets/icons/ic_favorite_list.png",
-                          width: 32,
-                          height: 32,
+                          width: 32.w,
+                          height: 32.h,
                           color: AppTheme.appColors.secondary,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 18),
+                   SizedBox(height: 18.h),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -93,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                   SizedBox(height: 12.h),
                   Expanded(
                     child: BlocBuilder<GetPokemonBloc, GetPokemonState>(
                       builder: (context, state) {
@@ -110,31 +112,40 @@ class _HomeScreenState extends State<HomeScreen> {
                             return GridView.builder(
                               controller: _scrollController,
                               gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                   SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10.w,
+                                    mainAxisSpacing: 10.h,
                                     childAspectRatio: 0.8,
                                   ),
                               itemCount: itemCount,
                               itemBuilder: (context, index) {
                                 if (index >= listPokemon.length) {
-                                  return const Center(
+                                  return Center(
                                     child: Padding(
-                                      padding: EdgeInsets.all(16),
+                                      padding: EdgeInsets.all(16.w),
                                       child: CircularProgressIndicator(),
                                     ),
                                   );
                                 }
-
                                 return ItemPokemon(
                                   pokemon: listPokemon[index],
-                                  onTap: () {
-                                    context.pushNamed(
-                                      'detail',
-                                      extra: listPokemon[index],
-                                    );
+                                  onTap: () async {
+                                    final selected = listPokemon[index];
+                                    final imageUrl = selected.sprites?.other?.home?.frontDefault;
+
+                                    if (imageUrl != null && imageUrl.isNotEmpty) {
+                                      await precacheImage(CachedNetworkImageProvider(imageUrl), context);
+                                    }
+
+                                    if (context.mounted) {
+                                      context.pushNamed(
+                                        'detail',
+                                        extra: selected,
+                                      );
+                                    }
                                   },
+
                                 );
                               },
                             );
@@ -154,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         disconnected: () => Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: EdgeInsets.all(8.w),
                           decoration: BoxDecoration(
                             color: Colors.redAccent,
                             borderRadius: BorderRadius.circular(12),

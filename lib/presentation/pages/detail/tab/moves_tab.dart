@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/bloc/detail/move/get_move_bloc.dart';
 import 'package:pokefy/theme/app_theme.dart';
@@ -15,7 +16,7 @@ class MovesTab extends StatelessWidget {
     return BlocBuilder<GetMoveBloc, GetMoveState>(
       builder: (context, state) {
         return state.maybeWhen(
-          orElse: () => const SizedBox.shrink(),
+          orElse: () => SizedBox.shrink(),
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (message) => Center(child: Text('Error: $message')),
           loaded: (groupedMoves) {
@@ -32,7 +33,7 @@ class MovesTab extends StatelessWidget {
                 final moves = groupedMoves[category]!;
 
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 24.0),
+                  padding: EdgeInsets.only(bottom: 24.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -40,12 +41,12 @@ class MovesTab extends StatelessWidget {
                         category.toUpperCase(),
                         style: AppTheme.appTextStyles.header3,
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12.h),
                       Table(
                         border: TableBorder(
                           horizontalInside: BorderSide(
                             color: Colors.grey.shade300,
-                            width: 1,
+                            width: 1.w,
                           ),
                         ),
                         columnWidths: const {
@@ -99,7 +100,7 @@ class MovesTab extends StatelessWidget {
 
   Widget _buildTableHeader(String text) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Text(
         text,
         style: AppTheme.appTextStyles.bodyMedium.copyWith(
@@ -111,7 +112,7 @@ class MovesTab extends StatelessWidget {
 
   Widget _buildTableCell(String text) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Text(
         capitalize(text),
         style: AppTheme.appTextStyles.bodySmall,

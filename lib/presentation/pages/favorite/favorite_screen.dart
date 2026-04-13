@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/presentation/bloc/connectivity/connectivity_cubit.dart';
@@ -46,8 +47,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 8.0, horizontal: 18.0),
+              padding: EdgeInsets.symmetric(
+                  vertical: 8.h, horizontal: 18.w),
               child: Column(
                 children: [
                   Row(
@@ -57,12 +58,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         onPressed: () => Navigator.pop(context),
                         icon: Image.asset(
                           'assets/icons/ic_back.png',
-                          width: 24,
-                          height: 24,
+                          width: 24.w,
+                          height: 24.h,
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(width: 12),
+                       SizedBox(width: 12.w),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -74,7 +75,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12.h),
                   Expanded(
                     child: BlocBuilder<FavoritePokemonBloc,
                         FavoritePokemonState>(
@@ -95,10 +96,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             }
 
                             return GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10.w,
+                                mainAxisSpacing: 10.h,
                                 childAspectRatio: 0.8,
                               ),
                               itemCount: listPokemon.length,
@@ -111,7 +112,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                       extra: listPokemon[index],
                                     );
 
-                                    // Refresh after coming back from detail
                                     if (context.mounted) {
                                       context.read<FavoritePokemonBloc>().add(
                                         const FavoritePokemonEvent.loadAll(),
@@ -148,7 +148,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Icon(Icons.warning, color: Colors.white),
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8.w),
                               Text(
                                 "No Internet Connection",
                                 style: AppTheme.appTextStyles.bodySmall
