@@ -69,11 +69,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Pokefy", style: AppTheme.appTextStyles.iconAppText),
-                      Image.asset(
-                        "assets/icons/ic_favorite_list.png",
-                        width: 32,
-                        height: 32,
-                        color: AppTheme.appColors.secondary,
+                      IconButton(
+                        onPressed: () {
+                          context.pushNamed('favorite');
+                        },
+                        icon: Image.asset(
+                          "assets/icons/ic_favorite_list.png",
+                          width: 32,
+                          height: 32,
+                          color: AppTheme.appColors.secondary,
+                        ),
                       ),
                     ],
                   ),

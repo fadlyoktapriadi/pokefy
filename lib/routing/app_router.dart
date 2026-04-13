@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/pages/detail/detail_screen.dart';
+import 'package:pokefy/presentation/pages/favorite/favorite_screen.dart';
 import 'package:pokefy/presentation/pages/home/home_screen.dart';
 
 class AppRouter {
@@ -21,6 +22,11 @@ class AppRouter {
           return DetailScreen(pokemon: pokemon);
         },
       ),
+      GoRoute(
+        path: '/favorite',
+        name: 'favorite',
+        builder: (context, state) => FavoriteScreen()
+      )
     ],
     errorBuilder: (context, state) =>
         const Center(child: Text('Page Not Found')),
