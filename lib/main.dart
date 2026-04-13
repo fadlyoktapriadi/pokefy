@@ -5,7 +5,7 @@ import 'package:pokefy/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  di.init();
+  await di.init();
   runApp(const MyApp());
 }
 

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:pokefy/core/error/failure.dart';
-import 'package:pokefy/data/datasources/remote/pokemon_remote_data_source.dart';
+import 'package:pokefy/domain/data/remote/pokemon_remote_data_source.dart';
 import 'package:pokefy/domain/entity/evolution_chain/evolution_chain_entity.dart';
 import 'package:pokefy/domain/entity/move/move_detail_entity.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';

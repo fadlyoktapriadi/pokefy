@@ -1,6 +1,6 @@
 import 'package:pokefy/core/error/failure.dart';
 import 'package:pokefy/core/networks/dio_client.dart';
-import 'package:pokefy/data/datasources/remote/pokemon_remote_data_source.dart';
+import 'package:pokefy/domain/data/remote/pokemon_remote_data_source.dart';
 import 'package:pokefy/data/models/response/pokemon_list_response_dto.dart';
 import 'package:pokefy/domain/entity/evolution_chain/evolution_chain_entity.dart';
 import 'package:pokefy/domain/entity/move/move_detail_entity.dart';

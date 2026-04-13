@@ -6,6 +6,7 @@ import 'package:pokefy/presentation/bloc/detail/evolution/evolution_chain_bloc.d
 import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/type_defences/type_defences_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/move/get_move_bloc.dart';
+import 'package:pokefy/presentation/bloc/favorite/favorite_pokemon_bloc.dart';
 import 'package:pokefy/presentation/pages/detail/tab/about_tab.dart';
 import 'package:pokefy/presentation/pages/detail/tab/evolution_tab.dart';
 import 'package:pokefy/presentation/pages/detail/tab/moves_tab.dart';
@@ -51,6 +52,16 @@ class DetailScreen extends StatelessWidget {
           create: (_) =>
               di.locator<GetMoveBloc>()
                 ..add(GetMoveEvent.getMoves(pokemon.moves ?? [])),
+        ),
+        BlocProvider(
+          create: (_) {
+            final bloc = di.locator<FavoritePokemonBloc>();
+            final id = pokemon.id;
+            if (id != null) {
+              bloc.add(FavoritePokemonEvent.checkStatus(pokemonId: id));
+            }
+            return bloc;
+          },
         ),
       ],
       child: BlocListener<GetSpeciesBloc, GetSpeciesState>(
@@ -180,11 +191,33 @@ class DetailHeader extends StatelessWidget {
                 letterSpacing: 1.2,
               ),
             ),
-            Image.asset(
-              'assets/icons/ic_favorite.png',
-              width: 28,
-              height: 28,
-              color: Colors.white,
+            BlocBuilder<FavoritePokemonBloc, FavoritePokemonState>(
+              builder: (context, state) {
+                final isFavorite = state.maybeWhen(
+                  status: (isFavorite) => isFavorite,
+                  orElse: () => false,
+                );
+
+                return IconButton(
+                  onPressed: () {
+                    context.read<FavoritePokemonBloc>().add(
+                      FavoritePokemonEvent.toggle(pokemon: pokemon),
+                    );
+                  },
+                  icon: isFavorite
+                      ? Image.asset(
+                          'assets/icons/ic_favorited.png',
+                          width: 28,
+                          height: 28,
+                        )
+                      : Image.asset(
+                          'assets/icons/ic_favorite.png',
+                          width: 28,
+                          height: 28,
+                          color: Colors.white,
+                        ),
+                );
+              },
             ),
           ],
         ),
@@ -204,7 +237,7 @@ class DetailBottomPanel extends StatefulWidget {
 
 class _DetailBottomPanelState extends State<DetailBottomPanel> {
   int _selectedTabIndex = 0;
-  final List<String> _tabs = ['ABOUT', 'STATS', 'MOVES', 'EVOLUTIONS' ];
+  final List<String> _tabs = ['ABOUT', 'STATS', 'MOVES', 'EVOLUTIONS'];
 
   @override
   Widget build(BuildContext context) {
