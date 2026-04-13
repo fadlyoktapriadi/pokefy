@@ -1,6 +1,8 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pokefy/core/networks/connectivity_service.dart';
 import 'package:pokefy/core/networks/dio_client.dart';
 import 'package:pokefy/data/datasources/local/favorite_local_data_source_impl.dart';
 import 'package:pokefy/data/repository/favorite_repository_impl.dart';
@@ -19,6 +21,7 @@ import 'package:pokefy/domain/usecase/get_move_detail_use_case.dart';
 import 'package:pokefy/domain/usecase/get_species_pokemon_use_case.dart';
 import 'package:pokefy/domain/usecase/get_type_defences_use_case.dart';
 import 'package:pokefy/domain/usecase/toggle_favorite_use_case.dart';
+import 'package:pokefy/presentation/bloc/connectivity/connectivity_cubit.dart';
 import 'package:pokefy/presentation/bloc/detail/evolution/evolution_chain_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/type_defences/type_defences_bloc.dart';
@@ -36,6 +39,8 @@ Future<void> init() async {
     FavoriteLocalDataSourceImpl.boxName
   );
 
+  locator.registerLazySingleton(() => Connectivity());
+
   // Bloc
   locator.registerFactory(() => GetPokemonBloc(locator(), locator()));
   locator.registerFactory(() => GetSpeciesBloc(locator()));
@@ -43,6 +48,9 @@ Future<void> init() async {
   locator.registerFactory(() => EvolutionChainBloc(locator(), locator()));
   locator.registerFactory(() => GetMoveBloc(locator()));
   locator.registerFactory(() => FavoritePokemonBloc(locator(), locator(), locator()));
+
+  // Cubit
+  locator.registerFactory(() => ConnectivityCubit(locator()));
 
   // UseCase
   locator.registerLazySingleton(() => GetListPokemonUseCase(locator()));
@@ -73,5 +81,8 @@ Future<void> init() async {
 
   // Core
   locator.registerLazySingleton(() => DioClient());
+  locator.registerLazySingleton<ConnectivityService>(
+    () => ConnectivityServiceImpl(locator()),
+  );
 
 }

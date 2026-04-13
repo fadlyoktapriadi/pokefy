@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
+import 'package:pokefy/presentation/bloc/connectivity/connectivity_cubit.dart';
 import 'package:pokefy/presentation/bloc/detail/evolution/evolution_chain_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
 import 'package:pokefy/presentation/bloc/detail/type_defences/type_defences_bloc.dart';
@@ -273,6 +274,32 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
             ),
             const SizedBox(height: 24),
             Expanded(child: _buildTabContent(widget.pokemon)),
+            BlocBuilder<ConnectivityCubit, ConnectivityState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  disconnected: () => Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.warning, color: Colors.white),
+                        const SizedBox(width: 8),
+                        Text(
+                          "No Internet Connection",
+                          style: AppTheme.appTextStyles.bodySmall
+                              .copyWith(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                  orElse: () => const SizedBox.shrink(),
+                );
+              },
+            )
           ],
         ),
       ),

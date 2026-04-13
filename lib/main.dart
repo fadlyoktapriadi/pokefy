@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokefy/di/injection.dart' as di;
+import 'package:pokefy/presentation/bloc/connectivity/connectivity_cubit.dart';
 import 'package:pokefy/routing/app_router.dart';
 import 'package:pokefy/theme/app_theme.dart';
 
@@ -14,12 +16,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Pokefy App',
-      routerConfig: AppRouter.router,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      debugShowCheckedModeBanner: false,
-     );
+    return BlocProvider(
+      create: (_) => di.locator<ConnectivityCubit>()..start(),
+      child: MaterialApp.router(
+        title: 'Pokefy App',
+        routerConfig: AppRouter.router,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        debugShowCheckedModeBanner: false,
+      ),
+    );
   }
 }

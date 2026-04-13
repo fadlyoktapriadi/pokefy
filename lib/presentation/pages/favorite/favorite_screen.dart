@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokefy/di/injection.dart' as di;
+import 'package:pokefy/presentation/bloc/connectivity/connectivity_cubit.dart';
 import 'package:pokefy/presentation/bloc/favorite/favorite_pokemon_bloc.dart';
 import 'package:pokefy/presentation/widgets/item_pokemon.dart';
 import 'package:pokefy/theme/app_theme.dart';
@@ -134,6 +135,32 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       },
                     ),
                   ),
+                  BlocBuilder<ConnectivityCubit, ConnectivityState>(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        disconnected: () => Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.warning, color: Colors.white),
+                              const SizedBox(width: 8),
+                              Text(
+                                "No Internet Connection",
+                                style: AppTheme.appTextStyles.bodySmall
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                        orElse: () => const SizedBox.shrink(),
+                      );
+                    },
+                  )
                 ],
               ),
             ),
