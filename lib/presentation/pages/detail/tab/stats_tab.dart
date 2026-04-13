@@ -189,10 +189,12 @@ class StatsTab extends StatelessWidget {
             if (types.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0, ),
-                child: Text(
-                  'None',
-                  style: AppTheme.appTextStyles.bodySmall.copyWith(
-                    color: AppTheme.appColors.grey,
+                child: Center(
+                  child: Text(
+                    'None',
+                    style: AppTheme.appTextStyles.bodySmall.copyWith(
+                      color: AppTheme.appColors.grey,
+                    ),
                   ),
                 ),
               )
