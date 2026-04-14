@@ -98,6 +98,8 @@ class DetailScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }
 
 class DetailBackground extends StatelessWidget {
@@ -449,4 +451,5 @@ class DetailTab extends StatelessWidget {
       ),
     );
   }
+
 }

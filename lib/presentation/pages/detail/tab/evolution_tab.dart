@@ -23,8 +23,6 @@ class EvolutionTab extends StatelessWidget {
               return state.maybeWhen(
                 orElse: () => SizedBox.shrink(),
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (message) =>
-                    Center(child: Text('Failed to load: $message', style: AppTheme.appTextStyles.bodyMedium)),
                 loaded: (evolutionChain) {
                   final chain = evolutionChain.chain;
                   if (chain == null) {
@@ -36,6 +34,10 @@ class EvolutionTab extends StatelessWidget {
                     child: _buildEvolutionChain(chain),
                   );
                 },
+                error: (_) => Text(
+                  'Something went wrong while loading species data.',
+                  style: AppTheme.appTextStyles.bodySmall,
+                ),
               );
             },
           ),

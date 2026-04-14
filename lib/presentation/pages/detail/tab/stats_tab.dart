@@ -63,12 +63,6 @@ class StatsTab extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Center(child: CircularProgressIndicator()),
               ),
-              error: (message) => Text(
-                'Failed to load: $message',
-                style: AppTheme.appTextStyles.bodySmall.copyWith(
-                  color: AppTheme.appColors.danger,
-                ),
-              ),
               loaded: (strengths, vulnerability, resistances, immunities) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,6 +93,10 @@ class StatsTab extends StatelessWidget {
                   ],
                 );
               },
+              error: (_) => Text(
+                'Something went wrong while loading species data.',
+                style: AppTheme.appTextStyles.bodySmall,
+              ),
             );
           },
         ),

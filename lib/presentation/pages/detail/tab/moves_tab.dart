@@ -18,7 +18,6 @@ class MovesTab extends StatelessWidget {
         return state.maybeWhen(
           orElse: () => SizedBox.shrink(),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (message) => Center(child: Text('Error: $message')),
           loaded: (groupedMoves) {
             if (groupedMoves.isEmpty) {
               return const Center(child: Text('No moves available.'));
@@ -93,6 +92,10 @@ class MovesTab extends StatelessWidget {
               },
             );
           },
+          error: (_) => Text(
+            'Something went wrong while loading species data.',
+            style: AppTheme.appTextStyles.bodySmall,
+          ),
         );
       },
     );

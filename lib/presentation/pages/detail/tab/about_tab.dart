@@ -61,10 +61,6 @@ class AboutTab extends StatelessWidget {
         return state.when(
           initial: () => SizedBox.shrink(),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (message) => Text(
-            'Failed to load: $message',
-            style: AppTheme.appTextStyles.bodySmall,
-          ),
           loaded: (species) {
             final ratio = _getGenderRatio(species.genderRate);
             final maleFlex = (ratio.male * 10).round();
@@ -115,14 +111,14 @@ class AboutTab extends StatelessWidget {
                                 height: 14.h,
                                 color: AppTheme.appColors.black,
                               ),
-                               SizedBox(width: 6.w),
+                              SizedBox(width: 6.w),
                               Text(
                                 'Weight',
                                 style: AppTheme.appTextStyles.bodyMedium,
                               ),
                             ],
                           ),
-                           SizedBox(height: 6.h),
+                          SizedBox(height: 6.h),
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(10.0),
@@ -239,11 +235,11 @@ class AboutTab extends StatelessWidget {
                       height: 14.h,
                       color: AppTheme.appColors.black,
                     ),
-                     SizedBox(width: 6.w),
+                    SizedBox(width: 6.w),
                     Text('Habitat', style: AppTheme.appTextStyles.bodyMedium),
                   ],
                 ),
-                 SizedBox(height: 8.h),
+                SizedBox(height: 8.h),
                 Wrap(
                   children: [
                     Container(
@@ -440,6 +436,10 @@ class AboutTab extends StatelessWidget {
               ],
             );
           },
+          error: (_) => Text(
+            'Something went wrong while loading species data.',
+            style: AppTheme.appTextStyles.bodySmall,
+          ),
         );
       },
     );

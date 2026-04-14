@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pokefy/di/injection.dart' as di;
 import 'package:pokefy/presentation/bloc/connectivity/connectivity_cubit.dart';
 import 'package:pokefy/presentation/bloc/home/get_pokemon_bloc.dart';
@@ -62,10 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 8.h,
-                horizontal: 18.w,
-              ),
+              padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 18.w),
               child: Column(
                 children: [
                   Row(
@@ -85,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                   SizedBox(height: 18.h),
+                  SizedBox(height: 18.h),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -95,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                   SizedBox(height: 12.h),
+                  SizedBox(height: 12.h),
                   Expanded(
                     child: BlocBuilder<GetPokemonBloc, GetPokemonState>(
                       builder: (context, state) {
@@ -112,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             return GridView.builder(
                               controller: _scrollController,
                               gridDelegate:
-                                   SliverGridDelegateWithFixedCrossAxisCount(
+                                  SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 10.w,
                                     mainAxisSpacing: 10.h,
@@ -132,10 +130,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   pokemon: listPokemon[index],
                                   onTap: () async {
                                     final selected = listPokemon[index];
-                                    final imageUrl = selected.sprites?.other?.home?.frontDefault;
+                                    final imageUrl = selected
+                                        .sprites
+                                        ?.other
+                                        ?.home
+                                        ?.frontDefault;
 
-                                    if (imageUrl != null && imageUrl.isNotEmpty) {
-                                      await precacheImage(CachedNetworkImageProvider(imageUrl), context);
+                                    if (imageUrl != null &&
+                                        imageUrl.isNotEmpty) {
+                                      await precacheImage(
+                                        CachedNetworkImageProvider(imageUrl),
+                                        context,
+                                      );
                                     }
 
                                     if (context.mounted) {
@@ -145,16 +151,47 @@ class _HomeScreenState extends State<HomeScreen> {
                                       );
                                     }
                                   },
-
                                 );
                               },
                             );
                           },
                           error: (message) => Center(
-                            child: Text(
-                              message,
-                              textAlign: TextAlign.center,
-                              style: AppTheme.appTextStyles.bodySmall,
+                            child: Column(
+                              children: [
+                                Lottie.asset(
+                                  "assets/animations/not_found.json",
+                                  width: 200.w,
+                                  height: 200.h,
+                                  fit: BoxFit.cover,
+                                ),
+                                SizedBox(height: 14.h),
+                                Text(
+                                  "Failed to load pokemons. Please try again.",
+                                  style: AppTheme.appTextStyles.bodyMedium
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    _getPokemonBloc
+                                      .add(GetPokemonEvent.getListPokemon());
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(top: 12.h),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 8.h,
+                                      horizontal: 16.w,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppTheme.appColors.primary,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      "Retry",
+                                      style: AppTheme.appTextStyles.bodyMedium
+                                          .copyWith(color: Colors.white),
+                                    )
+                                  )
+                                )
+                              ],
                             ),
                           ),
                         );
@@ -186,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         orElse: () => const SizedBox.shrink(),
                       );
                     },
-                  )
+                  ),
                 ],
               ),
             ),
