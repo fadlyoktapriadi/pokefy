@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'pokemon_list_response_dto.freezed.dart';

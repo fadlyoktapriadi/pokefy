@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 import 'package:pokefy/domain/entity/egg_groups/egg_groups_entity.dart';
 import 'package:pokefy/domain/entity/evolution_chain/evolution_chain_entity.dart';

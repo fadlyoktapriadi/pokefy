@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/domain/usecase/check_favorite_use_case.dart';

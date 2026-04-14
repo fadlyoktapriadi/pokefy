@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pokefy/domain/entity/gender/GenderRatioEntity.dart';
+import 'package:pokefy/domain/entity/gender/gender_ratio_entity.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
 import 'package:pokefy/presentation/widgets/type_chip_detail.dart';

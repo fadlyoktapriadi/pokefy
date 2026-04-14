@@ -87,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "What Are You Looking \nFor ?",
-                      style: AppTheme.appTextStyles.header1.copyWith(
+                      "What Are You Looking For ?",
+                      style: AppTheme.appTextStyles.header2.copyWith(
                         color: AppTheme.appColors.black,
                       ),
                     ),
@@ -100,8 +100,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         return state.when(
                           initial: () =>
                               const Center(child: CircularProgressIndicator()),
-                          loading: () =>
-                              const Center(child: CircularProgressIndicator()),
+                          loading: () => Center(
+                            child: Lottie.asset(
+                              "assets/animations/pokeball_loading.json",
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                           loaded: (listPokemon, hasReachedMax, isLoadingMore) {
                             final itemCount = isLoadingMore && !hasReachedMax
                                 ? listPokemon.length + 1
@@ -122,7 +128,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   return Center(
                                     child: Padding(
                                       padding: EdgeInsets.all(16.w),
-                                      child: CircularProgressIndicator(),
+                                      child: Lottie.asset(
+                                        "assets/animations/pokeball_loading.json",
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   );
                                 }
@@ -167,12 +178,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(height: 14.h),
                                 Text(
                                   "Failed to load pokemons. Please try again.",
-                                  style: AppTheme.appTextStyles.bodyMedium
+                                  style: AppTheme.appTextStyles.bodyMedium,
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    _getPokemonBloc
-                                      .add(GetPokemonEvent.getListPokemon());
+                                    _getPokemonBloc.add(
+                                      GetPokemonEvent.getListPokemon(),
+                                    );
                                   },
                                   child: Container(
                                     margin: EdgeInsets.only(top: 12.h),
@@ -188,9 +200,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       "Retry",
                                       style: AppTheme.appTextStyles.bodyMedium
                                           .copyWith(color: Colors.white),
-                                    )
-                                  )
-                                )
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),

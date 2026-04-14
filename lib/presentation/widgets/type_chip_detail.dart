@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pokefy/theme/app_theme.dart';
 import 'package:pokefy/utils/type_color.dart';
 
 class TypeChipDetail extends StatelessWidget {
@@ -35,7 +34,7 @@ class TypeChipDetail extends StatelessWidget {
                         width: 14,
                         height: 14,
                         color: chipColor,
-                        errorBuilder: (_, __, ___) => const SizedBox(width: 14, height: 14),
+                        errorBuilder: (_, _, _) => const SizedBox(width: 14, height: 14),
                       ),
                     ),
                   ),

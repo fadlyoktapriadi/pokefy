@@ -30,7 +30,7 @@ class TypeChip extends StatelessWidget {
             width: 10,
             height: 10,
             color: chipColor,
-            errorBuilder: (_, __, ___) => const SizedBox(width: 10, height: 10),
+            errorBuilder: (_, _, _) => const SizedBox(width: 10, height: 10),
           ),
           const SizedBox(width: 2),
           Text(

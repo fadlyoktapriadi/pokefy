@@ -122,14 +122,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               },
                             );
                           },
-                          error: (message) =>
-                              Center(
-                                child: Text(
-                                  message,
-                                  textAlign: TextAlign.center,
-                                  style: AppTheme.appTextStyles.bodySmall,
-                                ),
-                              ),
+                          error: (_) => Text(
+                            'Something went wrong while loading species data.',
+                            style: AppTheme.appTextStyles.bodySmall,
+                          ),
                           status: (_) => const SizedBox.shrink(),
                         );
                       },
