@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import 'package:pokefy/domain/entity/stat/stat_entity.dart';
 import 'package:pokefy/presentation/bloc/detail/type_defences/type_defences_bloc.dart';
 import 'package:pokefy/presentation/widgets/type_chip_detail.dart';
@@ -60,14 +59,7 @@ class StatsTab extends StatelessWidget {
                   color: AppTheme.appColors.grey,
                 ),
               ),
-              loading: () => Center(
-                child: Lottie.asset(
-                  "assets/animations/pokeball_loading.json",
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
               loaded: (strengths, vulnerability, resistances, immunities) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

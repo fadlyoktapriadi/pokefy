@@ -100,14 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         return state.when(
                           initial: () =>
                               const Center(child: CircularProgressIndicator()),
-                          loading: () => Center(
-                            child: Lottie.asset(
-                              "assets/animations/pokeball_loading.json",
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                          loading: () => const Center(child: CircularProgressIndicator()),
                           loaded: (listPokemon, hasReachedMax, isLoadingMore) {
                             final itemCount = isLoadingMore && !hasReachedMax
                                 ? listPokemon.length + 1
@@ -126,15 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemBuilder: (context, index) {
                                 if (index >= listPokemon.length) {
                                   return Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(16.w),
-                                      child: Lottie.asset(
-                                        "assets/animations/pokeball_loading.json",
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                                    child: CircularProgressIndicator()
                                   );
                                 }
                                 return ItemPokemon(

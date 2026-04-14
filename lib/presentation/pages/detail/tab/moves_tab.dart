@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/bloc/detail/move/get_move_bloc.dart';
 import 'package:pokefy/theme/app_theme.dart';
@@ -18,14 +17,7 @@ class MovesTab extends StatelessWidget {
       builder: (context, state) {
         return state.maybeWhen(
           orElse: () => SizedBox.shrink(),
-          loading: () => Center(
-            child: Lottie.asset(
-              "assets/animations/pokeball_loading.json",
-              width: 100,
-              height: 100,
-              fit: BoxFit.cover,
-            ),
-          ),
+          loading: () => const Center(child: CircularProgressIndicator()),
           loaded: (groupedMoves) {
             if (groupedMoves.isEmpty) {
               return const Center(child: Text('No moves available.'));
