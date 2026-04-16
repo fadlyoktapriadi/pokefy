@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pokefy/domain/entity/gender/gender_ratio_entity.dart';
 import 'package:pokefy/domain/entity/pokemon/pokemon_entity.dart';
 import 'package:pokefy/presentation/bloc/detail/species/get_species_bloc.dart';
 import 'package:pokefy/presentation/widgets/type_chip_detail.dart';
 import 'package:pokefy/theme/app_theme.dart';
+import 'package:pokefy/utils/detail_pokemon_utils.dart';
 import 'package:pokefy/utils/text_helper.dart';
 
 class AboutTab extends StatelessWidget {
@@ -13,435 +13,363 @@ class AboutTab extends StatelessWidget {
 
   const AboutTab({super.key, required this.pokemon});
 
-  String _formatKilograms(int? hectograms) {
-    if (hectograms == null) return '-';
-    final kilograms = hectograms / 10;
-    return '${_formatNumber(kilograms)} kg';
-  }
-
-  String _formatMeters(int? decimeters) {
-    if (decimeters == null) return '-';
-    final meters = decimeters / 10;
-    return '${_formatNumber(meters)} m';
-  }
-
-  String _formatNumber(double value) {
-    return value % 1 == 0 ? value.toStringAsFixed(0) : value.toStringAsFixed(1);
-  }
-
-  GenderRatioEntity _getGenderRatio(int? genderRate) {
-    if (genderRate == null) {
-      return const GenderRatioEntity(male: 0, female: 0, genderless: false);
-    }
-
-    if (genderRate == -1) {
-      return const GenderRatioEntity(male: 0, female: 0, genderless: true);
-    }
-
-    final double female = (genderRate / 8.0) * 100;
-    final double male = 100 - female;
-
-    return GenderRatioEntity(male: male, female: female, genderless: false);
-  }
-
-  int calculateEggSteps(int hatchCounter) {
-    return (hatchCounter + 1) * 255;
-  }
-
   @override
   Widget build(BuildContext context) {
     final typeNames =
         pokemon.types
             ?.map((item) => item.type?.name?.toLowerCase() ?? 'unknown')
             .toList() ??
-        [];
+            <String>[];
 
-    return BlocBuilder<GetSpeciesBloc, GetSpeciesState>(
-      builder: (context, state) {
-        return state.when(
-          initial: () => SizedBox.shrink(),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          loaded: (species) {
-            final ratio = _getGenderRatio(species.genderRate);
-            final maleFlex = (ratio.male * 10).round();
-            final femaleFlex = (ratio.female * 10).round();
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxWidth;
 
-            return ListView(
-              padding: EdgeInsets.zero,
-              physics: const BouncingScrollPhysics(),
-              children: [
-                Row(
+        // Jangan pakai contentMaxWidth fixed di sini supaya width mengikuti panel/tab parent.
+        final horizontalPagePadding = clamp(8.w, 6, 24);
+        final sectionGap = clamp(12.h, 10, 16);
+        final rowGap = clamp(8.h, 6, 12);
+        final boxPadding = clamp(10.w, 8, 12);
+        final chipVPad = clamp(8.h, 6, 10);
+        final chipHPad = clamp(24.w, 16, 26);
+        final iconSize = clamp(14.w, 12, 16);
+
+        final isWide = maxWidth >= 700;
+        final contentWidth = maxWidth - (horizontalPagePadding * 2);
+        final halfGap = clamp(12.w, 8, 14);
+        final halfWidth = isWide
+            ? ((contentWidth - halfGap) / 2).clamp(160.0, 420.0)
+            : contentWidth;
+
+        return BlocBuilder<GetSpeciesBloc, GetSpeciesState>(
+          builder: (context, state) {
+            return state.when(
+              initial: () => const SizedBox.shrink(),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              loaded: (species) {
+                final ratio = getGenderRatio(species.genderRate);
+                final maleFlex = (ratio.male * 10).round();
+                final femaleFlex = (ratio.female * 10).round();
+
+                return ListView(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPagePadding),
+                  physics: const BouncingScrollPhysics(),
                   children: [
-                    Image.asset(
-                      'assets/icons/ic_pokemon.png',
-                      width: 14.w,
-                      height: 14.h,
-                      color: AppTheme.appColors.black,
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/icons/ic_pokemon.png',
+                          width: iconSize,
+                          height: iconSize,
+                          color: AppTheme.appColors.black,
+                        ),
+                        SizedBox(width: 6.w),
+                        Text('Types', style: AppTheme.appTextStyles.bodyMedium),
+                      ],
                     ),
-                    SizedBox(width: 6.w),
-                    Text('Types', style: AppTheme.appTextStyles.bodyMedium),
-                  ],
-                ),
-                SizedBox(height: 6.h),
-                Row(
-                  spacing: 5,
-                  children: [
-                    ...typeNames
-                        .take(2)
-                        .map(
-                          (type) => Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: TypeChipDetail(type: type),
+                    SizedBox(height: 6.h),
+                    Wrap(
+                      spacing: 6.w,
+                      runSpacing: 6.h,
+                      children: [
+                        ...typeNames.take(2).map((type) => TypeChipDetail(type: type)),
+                      ],
+                    ),
+
+                    SizedBox(height: sectionGap),
+
+                    Wrap(
+                      spacing: halfGap,
+                      runSpacing: halfGap,
+                      children: [
+                        SizedBox(
+                          width: halfWidth,
+                          child: _buildInfoBox(
+                            iconPath: 'assets/icons/ic_weight.png',
+                            title: 'Weight',
+                            value: formatKilograms(pokemon.weight),
+                            borderColor: AppTheme.appColors.primary,
+                            iconSize: iconSize,
+                            rowGap: rowGap,
+                            boxPadding: boxPadding,
                           ),
                         ),
-                  ],
-                ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
+                        SizedBox(
+                          width: halfWidth,
+                          child: _buildInfoBox(
+                            iconPath: 'assets/icons/ic_height.png',
+                            title: 'Height',
+                            value: formatMeters(pokemon.height),
+                            borderColor: AppTheme.appColors.secondary,
+                            iconSize: iconSize,
+                            rowGap: rowGap,
+                            boxPadding: boxPadding,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: sectionGap),
+
+                    _buildSectionTitle(
+                      iconPath: 'assets/icons/ic_ability.png',
+                      title: 'Abilities',
+                      iconSize: iconSize,
+                    ),
+                    SizedBox(height: rowGap),
+                    Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: [
+                        ...(pokemon.abilities ?? []).map(
+                              (ability) => _buildChip(
+                            label: capitalize(
+                              ability.ability?.name?.replaceAll('-', ' ') ?? '-',
+                            ),
+                            borderColor: AppTheme.appColors.warning,
+                            vPad: chipVPad,
+                            hPad: chipHPad,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: sectionGap),
+
+                    _buildSectionTitle(
+                      iconPath: 'assets/icons/ic_habitat.png',
+                      title: 'Habitat',
+                      iconSize: iconSize,
+                    ),
+                    SizedBox(height: rowGap),
+                    Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: [
+                        _buildChip(
+                          label: capitalize(
+                            species.habitat?.name?.replaceAll('-', ' ') ?? '-',
+                          ),
+                          borderColor: AppTheme.appColors.success,
+                          vPad: chipVPad,
+                          hPad: chipHPad,
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: clamp(14.h, 12, 18)),
+                    Text(
+                      'Breeding',
+                      style: AppTheme.appTextStyles.header3.copyWith(letterSpacing: 0.8),
+                    ),
+                    SizedBox(height: rowGap),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/icons/ic_gender_ratio.png',
+                          width: iconSize,
+                          height: iconSize,
+                          color: AppTheme.appColors.black,
+                        ),
+                        SizedBox(width: 6.w),
+                        Text('Gender Rate', style: AppTheme.appTextStyles.bodyMedium),
+                      ],
+                    ),
+                    SizedBox(height: sectionGap),
+
+                    if (ratio.genderless)
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/icons/ic_weight.png',
-                                width: 14.w,
-                                height: 14.h,
-                                color: AppTheme.appColors.black,
-                              ),
-                              SizedBox(width: 6.w),
-                              Text(
-                                'Weight',
-                                style: AppTheme.appTextStyles.bodyMedium,
-                              ),
-                            ],
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              height: clamp(10.h, 8, 12),
+                              width: double.infinity,
+                              color: AppTheme.appColors.grey,
+                            ),
                           ),
                           SizedBox(height: 6.h),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.8),
-                              border: Border.all(
-                                color: AppTheme.appColors.primary,
-                                width: 1.5,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Center(
-                              child: Text(
-                                _formatKilograms(pokemon.weight),
-                                style: AppTheme.appTextStyles.bodySmall,
-                              ),
-                            ),
-                          ),
+                          Text('Genderless', style: AppTheme.appTextStyles.bodySmall),
                         ],
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: Column(
+                      )
+                    else
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/icons/ic_height.png',
-                                width: 14.w,
-                                height: 14.h,
-                                color: AppTheme.appColors.black,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: SizedBox(
+                              height: clamp(10.h, 8, 12),
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  if (maleFlex > 0)
+                                    Expanded(
+                                      flex: maleFlex,
+                                      child: Container(color: AppTheme.appColors.primary),
+                                    ),
+                                  if (femaleFlex > 0)
+                                    Expanded(
+                                      flex: femaleFlex,
+                                      child: Container(color: AppTheme.appColors.secondary),
+                                    ),
+                                ],
                               ),
-                              SizedBox(width: 6.w),
-                              Text(
-                                'Height',
-                                style: AppTheme.appTextStyles.bodyMedium,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8.h),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.8),
-                              border: Border.all(
-                                color: AppTheme.appColors.secondary,
-                                width: 1.5,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Center(
-                              child: Text(
-                                _formatMeters(pokemon.height),
+                          ),
+                          SizedBox(height: 6.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Male ${ratio.male.toStringAsFixed(1)}%',
                                 style: AppTheme.appTextStyles.bodySmall,
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/ic_ability.png',
-                      width: 14,
-                      height: 14,
-                      color: AppTheme.appColors.black,
-                    ),
-                    SizedBox(width: 6.w),
-                    Text('Abilities', style: AppTheme.appTextStyles.bodyMedium),
-                  ],
-                ),
-                SizedBox(height: 8.h),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    ...(pokemon.abilities ?? []).map(
-                      (ability) => Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8.h,
-                          horizontal: 24.w,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.8),
-                          border: Border.all(
-                            color: AppTheme.appColors.warning,
-                            width: 1.5,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          capitalize(
-                            ability.ability?.name?.replaceAll('-', ' ') ?? '-',
-                          ),
-                          style: AppTheme.appTextStyles.bodySmall,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/ic_habitat.png',
-                      width: 14.w,
-                      height: 14.h,
-                      color: AppTheme.appColors.black,
-                    ),
-                    SizedBox(width: 6.w),
-                    Text('Habitat', style: AppTheme.appTextStyles.bodyMedium),
-                  ],
-                ),
-                SizedBox(height: 8.h),
-                Wrap(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8,
-                        horizontal: 24,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.8),
-                        border: Border.all(
-                          color: AppTheme.appColors.success,
-                          width: 1.5,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        capitalize(
-                          species.habitat?.name?.replaceAll('-', ' ') ?? '-',
-                        ),
-                        style: AppTheme.appTextStyles.bodySmall,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 14.h),
-                Text(
-                  "Breeding",
-                  style: AppTheme.appTextStyles.header3.copyWith(
-                    letterSpacing: 0.8,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/icons/ic_gender_ratio.png',
-                      width: 14.w,
-                      height: 14.h,
-                      color: AppTheme.appColors.black,
-                    ),
-                    SizedBox(width: 6.w),
-                    Text(
-                      'Gender Rate',
-                      style: AppTheme.appTextStyles.bodyMedium,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 12.h),
-                if (ratio.genderless)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Container(
-                          height: 10.h,
-                          width: double.infinity,
-                          color: AppTheme.appColors.grey,
-                        ),
-                      ),
-                      SizedBox(height: 6.h),
-                      Text(
-                        'Genderless',
-                        style: AppTheme.appTextStyles.bodySmall,
-                      ),
-                    ],
-                  )
-                else
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: SizedBox(
-                          height: 10.h,
-                          width: double.infinity,
-                          child: Row(
-                            children: [
-                              if (maleFlex > 0)
-                                Expanded(
-                                  flex: maleFlex,
-                                  child: Container(
-                                    color: AppTheme.appColors.primary,
-                                  ),
-                                ),
-                              if (femaleFlex > 0)
-                                Expanded(
-                                  flex: femaleFlex,
-                                  child: Container(
-                                    color: AppTheme.appColors.secondary,
-                                  ),
-                                ),
+                              Text(
+                                'Female ${ratio.female.toStringAsFixed(1)}%',
+                                style: AppTheme.appTextStyles.bodySmall,
+                              ),
                             ],
                           ),
-                        ),
-                      ),
-                      SizedBox(height: 6.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Male ${ratio.male.toStringAsFixed(1)}%',
-                            style: AppTheme.appTextStyles.bodySmall,
-                          ),
-                          Text(
-                            'Female ${ratio.female.toStringAsFixed(1)}%',
-                            style: AppTheme.appTextStyles.bodySmall,
-                          ),
                         ],
                       ),
-                    ],
-                  ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/ic_egg.png',
-                      width: 14.w,
-                      height: 14.h,
-                      color: AppTheme.appColors.black,
+
+                    SizedBox(height: sectionGap),
+
+                    _buildSectionTitle(
+                      iconPath: 'assets/icons/ic_egg.png',
+                      title: 'Egg Groups',
+                      iconSize: iconSize,
                     ),
-                    SizedBox(width: 6.h),
-                    Text(
-                      'Egg Groups',
-                      style: AppTheme.appTextStyles.bodyMedium,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8.h),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    ...(species.eggGroups ?? []).map(
-                      (egg) => Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 8.h,
-                          horizontal: 24.w,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.8),
-                          border: Border.all(
-                            color: AppTheme.appColors.danger,
-                            width: 1.5,
+                    SizedBox(height: rowGap),
+                    Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: [
+                        ...(species.eggGroups ?? []).map(
+                              (egg) => _buildChip(
+                            label: capitalize(egg.name ?? '-'),
+                            borderColor: AppTheme.appColors.danger,
+                            vPad: chipVPad,
+                            hPad: chipHPad,
                           ),
-                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Text(
-                          capitalize(egg.name ?? '-'),
-                          style: AppTheme.appTextStyles.bodySmall,
+                      ],
+                    ),
+
+                    SizedBox(height: sectionGap),
+
+                    _buildSectionTitle(
+                      iconPath: 'assets/icons/ic_hatch.png',
+                      title: 'Egg Cycle',
+                      iconSize: iconSize,
+                    ),
+                    SizedBox(height: rowGap),
+                    Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: [
+                        _buildChip(
+                          label:
+                          '${species.hatchCounter} (${calculateEggSteps(species.hatchCounter ?? 0)} steps)',
+                          borderColor: AppTheme.appColors.secondary,
+                          vPad: chipVPad,
+                          hPad: chipHPad,
                         ),
-                      ),
+                      ],
                     ),
+
+                    SizedBox(height: clamp(24.h, 18, 30)),
                   ],
-                ),
-                SizedBox(height: 12.h),
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/ic_hatch.png',
-                      width: 14.w,
-                      height: 14.h,
-                      color: AppTheme.appColors.black,
-                    ),
-                    SizedBox(width: 6.w),
-                    Text('Egg Cycle', style: AppTheme.appTextStyles.bodyMedium),
-                  ],
-                ),
-                SizedBox(height: 8.h),
-                Wrap(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 8.h,
-                        horizontal: 24.w,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.8),
-                        border: Border.all(
-                          color: AppTheme.appColors.secondary,
-                          width: 1.5,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        "${species.hatchCounter} (${calculateEggSteps(species.hatchCounter ?? 0)} steps)",
-                        style: AppTheme.appTextStyles.bodySmall,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 24.h),
-              ],
+                );
+              },
+              error: (_) => Text(
+                'Something went wrong while loading species data.',
+                style: AppTheme.appTextStyles.bodySmall,
+              ),
             );
           },
-          error: (_) => Text(
-            'Something went wrong while loading species data.',
-            style: AppTheme.appTextStyles.bodySmall,
-          ),
         );
       },
+    );
+  }
+
+  Widget _buildSectionTitle({
+    required String iconPath,
+    required String title,
+    required double iconSize,
+  }) {
+    return Row(
+      children: [
+        Image.asset(
+          iconPath,
+          width: iconSize,
+          height: iconSize,
+          color: AppTheme.appColors.black,
+        ),
+        SizedBox(width: 6.w),
+        Text(title, style: AppTheme.appTextStyles.bodyMedium),
+      ],
+    );
+  }
+
+  Widget _buildInfoBox({
+    required String iconPath,
+    required String title,
+    required String value,
+    required Color borderColor,
+    required double iconSize,
+    required double rowGap,
+    required double boxPadding,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionTitle(iconPath: iconPath, title: title, iconSize: iconSize),
+        SizedBox(height: rowGap),
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(boxPadding),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.8),
+            border: Border.all(color: borderColor, width: 1.5),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Center(
+            child: Text(
+              value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTheme.appTextStyles.bodySmall,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildChip({
+    required String label,
+    required Color borderColor,
+    required double vPad,
+    required double hPad,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: vPad, horizontal: hPad),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.8),
+        border: Border.all(color: borderColor, width: 1.5),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: AppTheme.appTextStyles.bodySmall,
+      ),
     );
   }
 }

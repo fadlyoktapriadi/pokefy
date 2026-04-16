@@ -12,33 +12,59 @@ class TypeChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chipColor = _typeColorMap[type] ?? const Color(0xFF808080);
-    final typeLabel = type.isEmpty
-        ? 'Unknown'
-        : type[0].toUpperCase() + type.substring(1);
+    final typeLabel = type.isEmpty ? 'Unknown' : '${type[0].toUpperCase()}${type.substring(1)}';
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.8),
-        border: Border.all(color: chipColor),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          Image.asset(
-            'assets/icons/types/$type.png',
-            width: 10,
-            height: 10,
-            color: chipColor,
-            errorBuilder: (_, _, _) => const SizedBox(width: 10, height: 10),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth.isFinite ? constraints.maxWidth : 80.0;
+
+        // Responsive sizing with safe bounds.
+        final iconSize = (width * 0.12).clamp(10.0, 14.0);
+        final horizontal = (width * 0.10).clamp(8.0, 12.0);
+        final vertical = (width * 0.05).clamp(4.0, 6.0);
+        final gap = (width * 0.03).clamp(2.0, 6.0);
+        final fontSize = (width * 0.11).clamp(10.0, 12.0);
+
+        return Container(
+          padding: EdgeInsets.symmetric(
+            vertical: vertical.toDouble(),
+            horizontal: horizontal.toDouble(),
           ),
-          const SizedBox(width: 2),
-          Text(
-            typeLabel,
-            style: AppTheme.appTextStyles.bodyXSmall.copyWith(color: chipColor),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.8),
+            border: Border.all(color: chipColor),
+            borderRadius: BorderRadius.circular(20),
           ),
-        ],
-      ),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/icons/types/$type.png',
+                  width: iconSize.toDouble(),
+                  height: iconSize.toDouble(),
+                  color: chipColor,
+                  errorBuilder: (_, _, _) => SizedBox(
+                    width: iconSize.toDouble(),
+                    height: iconSize.toDouble(),
+                  ),
+                ),
+                SizedBox(width: gap.toDouble()),
+                Text(
+                  typeLabel,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTheme.appTextStyles.bodyXSmall.copyWith(
+                    color: chipColor,
+                    fontSize: fontSize.toDouble(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

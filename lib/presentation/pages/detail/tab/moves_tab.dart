@@ -13,91 +13,94 @@ class MovesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetMoveBloc, GetMoveState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          orElse: () => SizedBox.shrink(),
-          loading: () => const Center(child: CircularProgressIndicator()),
-          loaded: (groupedMoves) {
-            if (groupedMoves.isEmpty) {
-              return const Center(child: Text('No moves available.'));
-            }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: BlocBuilder<GetMoveBloc, GetMoveState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            orElse: () => SizedBox.shrink(),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            loaded: (groupedMoves) {
+              if (groupedMoves.isEmpty) {
+                return const Center(child: Text('No moves available.'));
+              }
 
-            return ListView.builder(
-              padding: EdgeInsets.zero,
-              physics: const BouncingScrollPhysics(),
-              itemCount: groupedMoves.keys.length,
-              itemBuilder: (context, index) {
-                final category = groupedMoves.keys.elementAt(index);
-                final moves = groupedMoves[category]!;
+              return ListView.builder(
+                padding: EdgeInsets.zero,
+                physics: const BouncingScrollPhysics(),
+                itemCount: groupedMoves.keys.length,
+                itemBuilder: (context, index) {
+                  final category = groupedMoves.keys.elementAt(index);
+                  final moves = groupedMoves[category]!;
 
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 24.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        category.toUpperCase(),
-                        style: AppTheme.appTextStyles.header3,
-                      ),
-                      SizedBox(height: 12.h),
-                      Table(
-                        border: TableBorder(
-                          horizontalInside: BorderSide(
-                            color: Colors.grey.shade300,
-                            width: 1.w,
-                          ),
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: 24.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          category.toUpperCase(),
+                          style: AppTheme.appTextStyles.header3,
                         ),
-                        columnWidths: const {
-                          0: FlexColumnWidth(2),
-                          1: FlexColumnWidth(1),
-                          2: FlexColumnWidth(1),
-                          3: FlexColumnWidth(1),
-                        },
-                        children: [
-                          TableRow(
-                            children: [
-                              _buildTableHeader('Name'),
-                              _buildTableHeader('Lvl/Req'),
-                              _buildTableHeader('Pwr'),
-                              _buildTableHeader('Acc'),
-                            ],
+                        SizedBox(height: 12.h),
+                        Table(
+                          border: TableBorder(
+                            horizontalInside: BorderSide(
+                              color: Colors.grey.shade300,
+                              width: 1.w,
+                            ),
                           ),
-                          ...moves.map((moveData) {
-                            final detail = moveData.detail;
-                            final versionDetails =
-                                moveData.move.versionGroupDetails;
-                            final level = versionDetails?.isNotEmpty == true
-                                ? versionDetails!.first.levelLearnedAt
-                                : 0;
-                            final levelStr = level != null && level > 0
-                                ? level.toString()
-                                : '-';
-
-                            return TableRow(
+                          columnWidths: const {
+                            0: FlexColumnWidth(2),
+                            1: FlexColumnWidth(1),
+                            2: FlexColumnWidth(1),
+                            3: FlexColumnWidth(1),
+                          },
+                          children: [
+                            TableRow(
                               children: [
-                                _buildTableCell(
-                                    detail.name?.replaceAll('-', ' ') ?? '-'),
-                                _buildTableCell(levelStr),
-                                _buildTableCell(detail.power?.toString() ?? '-'),
-                                _buildTableCell(detail.accuracy?.toString() ?? '-'),
+                                _buildTableHeader('Name'),
+                                _buildTableHeader('Lvl/Req'),
+                                _buildTableHeader('Pwr'),
+                                _buildTableHeader('Acc'),
                               ],
-                            );
-                          }),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          },
-          error: (_) => Text(
-            'Something went wrong while loading species data.',
-            style: AppTheme.appTextStyles.bodySmall,
-          ),
-        );
-      },
+                            ),
+                            ...moves.map((moveData) {
+                              final detail = moveData.detail;
+                              final versionDetails =
+                                  moveData.move.versionGroupDetails;
+                              final level = versionDetails?.isNotEmpty == true
+                                  ? versionDetails!.first.levelLearnedAt
+                                  : 0;
+                              final levelStr = level != null && level > 0
+                                  ? level.toString()
+                                  : '-';
+
+                              return TableRow(
+                                children: [
+                                  _buildTableCell(
+                                      detail.name?.replaceAll('-', ' ') ?? '-'),
+                                  _buildTableCell(levelStr),
+                                  _buildTableCell(detail.power?.toString() ?? '-'),
+                                  _buildTableCell(detail.accuracy?.toString() ?? '-'),
+                                ],
+                              );
+                            }),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+            error: (_) => Text(
+              'Something went wrong while loading species data.',
+              style: AppTheme.appTextStyles.bodySmall,
+            ),
+          );
+        },
+      ),
     );
   }
 

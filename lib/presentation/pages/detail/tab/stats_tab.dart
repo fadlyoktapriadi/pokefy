@@ -33,71 +33,74 @@ class StatsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      physics: const BouncingScrollPhysics(),
-      children: [
-        ...stats.map(
-          (s) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: _buildStatRow(
-              s.stat?.name ?? 'Unknown',
-              s.baseStat ?? 0,
-              colorByStat(s.stat?.name ?? 'Unknown'),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        physics: const BouncingScrollPhysics(),
+        children: [
+          ...stats.map(
+            (s) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: _buildStatRow(
+                s.stat?.name ?? 'Unknown',
+                s.baseStat ?? 0,
+                colorByStat(s.stat?.name ?? 'Unknown'),
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 24.h),
-        Text('Type Defences', style: AppTheme.appTextStyles.header3),
-        SizedBox(height: 8.h),
-        BlocBuilder<TypeDefencesBloc, TypeDefencesState>(
-          builder: (context, state) {
-            return state.when(
-              initial: () => Text(
-                'No type defence data',
-                style: AppTheme.appTextStyles.bodySmall.copyWith(
-                  color: AppTheme.appColors.grey,
+          SizedBox(height: 24.h),
+          Text('Type Defences', style: AppTheme.appTextStyles.header3),
+          SizedBox(height: 8.h),
+          BlocBuilder<TypeDefencesBloc, TypeDefencesState>(
+            builder: (context, state) {
+              return state.when(
+                initial: () => Text(
+                  'No type defence data',
+                  style: AppTheme.appTextStyles.bodySmall.copyWith(
+                    color: AppTheme.appColors.grey,
+                  ),
                 ),
-              ),
-              loading: () => const Center(child: CircularProgressIndicator()),
-              loaded: (strengths, vulnerability, resistances, immunities) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildDefenceGroup(
-                      title: 'Strengths Against',
-                      types: strengths,
-                      chipColor: AppTheme.appColors.secondary,
-                    ),
-                    SizedBox(height: 6.h),
-                    _buildDefenceGroup(
-                      title: 'Weaknesses To',
-                      types: vulnerability,
-                      chipColor: AppTheme.appColors.primary,
-                    ),
-                    SizedBox(height: 6.h),
-                    _buildDefenceGroup(
-                      title: 'Resistances To',
-                      types: resistances,
-                      chipColor: AppTheme.appColors.warning,
-                    ),
-                    SizedBox(height: 6.h),
-                    _buildDefenceGroup(
-                      title: 'Immunities To',
-                      types: immunities,
-                      chipColor: AppTheme.appColors.grey,
-                    ),
-                  ],
-                );
-              },
-              error: (_) => Text(
-                'Something went wrong while loading species data.',
-                style: AppTheme.appTextStyles.bodySmall,
-              ),
-            );
-          },
-        ),
-      ],
+                loading: () => const Center(child: CircularProgressIndicator()),
+                loaded: (strengths, vulnerability, resistances, immunities) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildDefenceGroup(
+                        title: 'Strengths Against',
+                        types: strengths,
+                        chipColor: AppTheme.appColors.secondary,
+                      ),
+                      SizedBox(height: 6.h),
+                      _buildDefenceGroup(
+                        title: 'Weaknesses To',
+                        types: vulnerability,
+                        chipColor: AppTheme.appColors.primary,
+                      ),
+                      SizedBox(height: 6.h),
+                      _buildDefenceGroup(
+                        title: 'Resistances To',
+                        types: resistances,
+                        chipColor: AppTheme.appColors.warning,
+                      ),
+                      SizedBox(height: 6.h),
+                      _buildDefenceGroup(
+                        title: 'Immunities To',
+                        types: immunities,
+                        chipColor: AppTheme.appColors.grey,
+                      ),
+                    ],
+                  );
+                },
+                error: (_) => Text(
+                  'Something went wrong while loading species data.',
+                  style: AppTheme.appTextStyles.bodySmall,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -129,7 +132,7 @@ class StatsTab extends StatelessWidget {
             ),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
-              widthFactor: value / 195.w,
+              widthFactor: (value / 195).clamp(0.0, 1.0),
               child: Container(
                 decoration: BoxDecoration(
                   color: barColor,

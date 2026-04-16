@@ -11,38 +11,41 @@ class EvolutionTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Evolution Chain', style: AppTheme.appTextStyles.header3),
-        SizedBox(height: 14.h),
-        Expanded(
-          child: BlocBuilder<EvolutionChainBloc, EvolutionChainState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                orElse: () => SizedBox.shrink(),
-                loading: () => const Center(child: CircularProgressIndicator()),
-                loaded: (evolutionChain) {
-                  final chain = evolutionChain.chain;
-                  if (chain == null) {
-                    return Center(child: Text('No evolution data', style: AppTheme.appTextStyles.bodyMedium));
-                  }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Evolution Chain', style: AppTheme.appTextStyles.header3),
+          SizedBox(height: 14.h),
+          Expanded(
+            child: BlocBuilder<EvolutionChainBloc, EvolutionChainState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  orElse: () => SizedBox.shrink(),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loaded: (evolutionChain) {
+                    final chain = evolutionChain.chain;
+                    if (chain == null) {
+                      return Center(child: Text('No evolution data', style: AppTheme.appTextStyles.bodyMedium));
+                    }
 
-                  return SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: _buildEvolutionChain(chain),
-                  );
-                },
-                error: (_) => Text(
-                  'Something went wrong while loading species data.',
-                  style: AppTheme.appTextStyles.bodySmall,
-                ),
-              );
-            },
+                    return SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: _buildEvolutionChain(chain),
+                    );
+                  },
+                  error: (_) => Text(
+                    'Something went wrong while loading species data.',
+                    style: AppTheme.appTextStyles.bodySmall,
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

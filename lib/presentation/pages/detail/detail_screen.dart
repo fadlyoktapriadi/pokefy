@@ -18,6 +18,13 @@ import 'package:pokefy/theme/app_theme.dart';
 import 'package:pokefy/utils/text_helper.dart';
 import 'package:pokefy/utils/type_color.dart';
 
+double _responsiveMaxContentWidth(double screenWidth) {
+  if (screenWidth >= 1600) return 1300;
+  if (screenWidth >= 1200) return 1100;
+  if (screenWidth >= 900) return 920;
+  return screenWidth;
+}
+
 class DetailScreen extends StatelessWidget {
   final PokemonEntity pokemon;
 
@@ -149,82 +156,80 @@ class DetailPokemonImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageUrl = pokemon.sprites?.other?.home?.frontDefault;
+    final size = MediaQuery.of(context).size;
+
+    final imageHeight = (size.width * 0.48).clamp(200.0, 275.0);
+    final topOffset = (size.height * 0.11).clamp(82.0, 100.0);
 
     return Positioned(
-      top: 100,
+      top: topOffset,
       left: 0,
       right: 0,
       child: Center(
         child: Hero(
           tag: "pokemon_${pokemon.id}",
-          flightShuttleBuilder:
-              (
-                BuildContext flightContext,
-                Animation<double> animation,
-                HeroFlightDirection flightDirection,
-                BuildContext fromHeroContext,
-                BuildContext toHeroContext,
+          flightShuttleBuilder: (
+              BuildContext flightContext,
+              Animation<double> animation,
+              HeroFlightDirection flightDirection,
+              BuildContext fromHeroContext,
+              BuildContext toHeroContext,
               ) {
-                final fromHero = fromHeroContext.widget as Hero;
-                final toHero = toHeroContext.widget as Hero;
+            final fromHero = fromHeroContext.widget as Hero;
+            final toHero = toHeroContext.widget as Hero;
 
-                final shuttleChild = flightDirection == HeroFlightDirection.push
-                    ? toHero.child
-                    : fromHero.child;
+            final shuttleChild = flightDirection == HeroFlightDirection.push
+                ? toHero.child
+                : fromHero.child;
 
-                return AnimatedBuilder(
-                  animation: animation,
-                  child: shuttleChild,
-                  builder: (context, child) {
-                    final curved = Curves.easeInOut.transform(animation.value);
-                    final scale = Tween<double>(
-                      begin: 0.96,
-                      end: 1.0,
-                    ).transform(curved);
-                    final opacity = Tween<double>(
-                      begin: 0.9,
-                      end: 1.0,
-                    ).transform(curved);
+            return AnimatedBuilder(
+              animation: animation,
+              child: shuttleChild,
+              builder: (context, child) {
+                final curved = Curves.easeInOut.transform(animation.value);
+                final scale = Tween<double>(begin: 0.96, end: 1.0).transform(curved);
+                final opacity = Tween<double>(begin: 0.9, end: 1.0).transform(curved);
 
-                    return Material(
-                      type: MaterialType.transparency,
-                      child: Opacity(
-                        opacity: opacity,
-                        child: Transform.scale(scale: scale, child: child),
-                      ),
-                    );
-                  },
+                return Material(
+                  type: MaterialType.transparency,
+                  child: Opacity(
+                    opacity: opacity,
+                    child: Transform.scale(scale: scale, child: child),
+                  ),
                 );
               },
+            );
+          },
           child: imageUrl == null || imageUrl.isEmpty
               ? Image.asset(
-                  'assets/images/image_failed.png',
-                  height: 280.h,
-                  fit: BoxFit.contain,
-                )
+            'assets/images/image_failed.png',
+            height: imageHeight,
+            fit: BoxFit.contain,
+          )
               : CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  height: 280.h,
-                  fit: BoxFit.contain,
-                  fadeInDuration: Duration.zero,
-                  fadeOutDuration: Duration.zero,
-                  placeholder: (context, url) => SizedBox(
-                    height: 280.h,
-                    child: Center(
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    'assets/images/image_failed.png',
-                    height: 280.h,
-                    fit: BoxFit.contain,
-                  ),
-                ),
+            imageUrl: imageUrl,
+            height: imageHeight,
+            fit: BoxFit.contain,
+            fadeInDuration: Duration.zero,
+            fadeOutDuration: Duration.zero,
+            placeholder: (context, url) => SizedBox(
+              height: imageHeight,
+              child: const Center(
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ),
+            errorWidget: (context, url, error) => Image.asset(
+              'assets/images/image_failed.png',
+              height: imageHeight,
+              fit: BoxFit.contain,
+            ),
+          ),
         ),
       ),
     );
   }
 }
+
 
 class DetailHeader extends StatelessWidget {
   const DetailHeader({super.key, required this.pokemon});
@@ -233,71 +238,87 @@ class DetailHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final maxContentWidth = _responsiveMaxContentWidth(screenWidth);
+
+    final iconSize = (28.w).clamp(22.0, 32.0).toDouble();
+    final horizontalPadding = (20.w).clamp(12.0, 28.0).toDouble();
+    final verticalPadding = (16.h).clamp(6.0, 24.0).toDouble();
+
     return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Image.asset(
-                'assets/icons/ic_back.png',
-                width: 28.w,
-                height: 28.h,
-                color: Colors.white,
-              ),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxContentWidth),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: verticalPadding,
             ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Text(
-                  capitalize(clearStrip(pokemon.name ?? '-')),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  style: AppTheme.appTextStyles.header2.copyWith(
-                    color: AppTheme.appColors.white,
-                    letterSpacing: 1.2,
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Image.asset(
+                    'assets/icons/ic_back.png',
+                    width: iconSize,
+                    height: iconSize,
+                    color: Colors.white,
                   ),
                 ),
-              ),
-            ),
-            BlocBuilder<FavoritePokemonBloc, FavoritePokemonState>(
-              builder: (context, state) {
-                final isFavorite = state.maybeWhen(
-                  status: (isFavorite) => isFavorite,
-                  orElse: () => false,
-                );
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
+                    child: Text(
+                      capitalize(clearStrip(pokemon.name ?? '-')),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTheme.appTextStyles.header2.copyWith(
+                        color: AppTheme.appColors.white,
+                        letterSpacing: 1.0,
+                        fontSize: (28.w).clamp(22.0, 32.0).toDouble()
+                      ),
+                    ),
+                  ),
+                ),
+                BlocBuilder<FavoritePokemonBloc, FavoritePokemonState>(
+                  builder: (context, state) {
+                    final isFavorite = state.maybeWhen(
+                      status: (isFavorite) => isFavorite,
+                      orElse: () => false,
+                    );
 
-                return IconButton(
-                  onPressed: () {
-                    context.read<FavoritePokemonBloc>().add(
-                      FavoritePokemonEvent.toggle(pokemon: pokemon),
+                    return IconButton(
+                      onPressed: () {
+                        context.read<FavoritePokemonBloc>().add(
+                          FavoritePokemonEvent.toggle(pokemon: pokemon),
+                        );
+                      },
+                      icon: isFavorite
+                          ? Image.asset(
+                        'assets/icons/ic_favorited.png',
+                        width: iconSize,
+                        height: iconSize,
+                      )
+                          : Image.asset(
+                        'assets/icons/ic_favorite.png',
+                        width: iconSize,
+                        height: iconSize,
+                        color: Colors.white,
+                      ),
                     );
                   },
-                  icon: isFavorite
-                      ? Image.asset(
-                          'assets/icons/ic_favorited.png',
-                          width: 28.w,
-                          height: 28.h,
-                        )
-                      : Image.asset(
-                          'assets/icons/ic_favorite.png',
-                          width: 28.w,
-                          height: 28.h,
-                          color: Colors.white,
-                        ),
-                );
-              },
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
+
 
 class DetailBottomPanel extends StatefulWidget {
   final PokemonEntity pokemon;
@@ -314,73 +335,93 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final panelHeightFactor = screenHeight >= 900
-        ? 0.64
-        : screenHeight >= 700
-        ? 0.615
-        : 0.59;
+    final size = MediaQuery.of(context).size;
+    final maxContentWidth = _responsiveMaxContentWidth(size.width);
+
+    final panelHeight = (size.height * 0.62).clamp(430.0, 700.0);
+    final panelRadius = (40.r).clamp(26.0, 40.0).toDouble();
+
+    final horizontalPadding = (30.w).clamp(16.0, 32.0).toDouble();
+    final verticalPadding = (20.h).clamp(12.0, 22.0).toDouble();
+    final topInsetForImage = (size.height * 0.08).clamp(42.0, 72.0);
 
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Container(
-        height: screenHeight * panelHeightFactor,
-        decoration: BoxDecoration(
-          color: AppTheme.appColors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(40),
-            topRight: Radius.circular(40),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxContentWidth),
+        child: Container(
+          height: panelHeight,
+          decoration: BoxDecoration(
+            color: AppTheme.appColors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(panelRadius),
+              topRight: Radius.circular(panelRadius),
+            ),
           ),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 58.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(_tabs.length, (index) {
-                return DetailTab(
-                  text: _tabs[index],
-                  isSelected: _selectedTabIndex == index,
-                  onTap: () {
-                    setState(() {
-                      _selectedTabIndex = index;
-                    });
-                  },
-                );
-              }),
-            ),
-            SizedBox(height: 24.h),
-            Expanded(child: _buildTabContent(widget.pokemon)),
-            BlocBuilder<ConnectivityCubit, ConnectivityState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  disconnected: () => Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      borderRadius: BorderRadius.circular(12),
+          padding: EdgeInsets.symmetric(
+            horizontal: horizontalPadding,
+            vertical: verticalPadding,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: topInsetForImage),
+              Row(
+                children: List.generate(_tabs.length, (index) {
+                  return Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: (4.w).clamp(2.0, 8.0)),
+                      child: DetailTab(
+                        text: _tabs[index],
+                        isSelected: _selectedTabIndex == index,
+                        onTap: () {
+                          setState(() {
+                            _selectedTabIndex = index;
+                          });
+                        },
+                      ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.warning, color: Colors.white),
-                        SizedBox(width: 8.w),
-                        Text(
-                          "No Internet Connection",
-                          style: AppTheme.appTextStyles.bodySmall.copyWith(
-                            color: Colors.white,
+                  );
+                }),
+              ),
+              SizedBox(height: (20.h).clamp(12.0, 24.0).toDouble()),
+              Expanded(child: _buildTabContent(widget.pokemon)),
+              BlocBuilder<ConnectivityCubit, ConnectivityState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    disconnected: () => Container(
+                      margin: EdgeInsets.only(top: 6.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 8.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.warning, color: Colors.white),
+                          SizedBox(width: 8.w),
+                          Flexible(
+                            child: Text(
+                              "No Internet Connection",
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTheme.appTextStyles.bodySmall.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  orElse: () => const SizedBox.shrink(),
-                );
-              },
-            ),
-          ],
+                    orElse: () => const SizedBox.shrink(),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -402,6 +443,7 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
   }
 }
 
+
 class DetailTab extends StatelessWidget {
   const DetailTab({
     super.key,
@@ -416,40 +458,56 @@ class DetailTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              text,
-              style: AppTheme.appTextStyles.bodySmall.copyWith(
-                color: isSelected
-                    ? AppTheme.appColors.black
-                    : AppTheme.appColors.grey,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                fontSize: 13.sp,
-                letterSpacing: 0.5,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth.isFinite ? constraints.maxWidth : 90.0;
+
+        final fontSize = (width * 0.16).clamp(12.0, 18.0).toDouble();
+        final spacing = (6.h).clamp(4.0, 8.0).toDouble();
+        final lineHeight = (2.6.h).clamp(2.0, 3.5).toDouble();
+
+        return GestureDetector(
+          onTap: onTap,
+          behavior: HitTestBehavior.opaque,
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    text,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: AppTheme.appTextStyles.bodySmall.copyWith(
+                      color: isSelected
+                          ? AppTheme.appColors.black
+                          : AppTheme.appColors.grey,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                      fontSize: fontSize,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                  SizedBox(height: spacing),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 180),
+                    curve: Curves.easeOut,
+                    height: lineHeight,
+                    width: isSelected ? (width * 0.55).clamp(18.0, 46.0).toDouble() : 0,
+                    decoration: BoxDecoration(
+                      color: AppTheme.appColors.black,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                  ),
+
+                ],
               ),
             ),
-            SizedBox(height: 6.h),
-            if (isSelected)
-              Container(
-                width: 5,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: AppTheme.appColors.black,
-                  shape: BoxShape.circle,
-                ),
-              )
-            else
-              SizedBox(height: 5.h),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
-
 }
