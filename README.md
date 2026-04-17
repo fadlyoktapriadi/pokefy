@@ -1,5 +1,6 @@
 # Pokefy
-
+![Codemagic build status](https://api.codemagic.io/apps/69e18b76f66ac148eaa3cd22/69e18b76f66ac148eaa3cd21/status_badge.svg)
+<br>
 Pokefy (Pokedex App)
 <br>
 <img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/home_page.png" width="250">
