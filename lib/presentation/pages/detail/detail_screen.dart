@@ -105,8 +105,6 @@ class DetailScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }
 
 class DetailBackground extends StatelessWidget {
@@ -158,7 +156,7 @@ class DetailPokemonImage extends StatelessWidget {
     final imageUrl = pokemon.sprites?.other?.home?.frontDefault;
     final size = MediaQuery.of(context).size;
 
-    final imageHeight = (size.width * 0.48).clamp(200.0, 275.0);
+    final imageHeight = (size.width * 0.75).clamp(230.0, 270.0);
     final topOffset = (size.height * 0.11).clamp(82.0, 100.0);
 
     return Positioned(
@@ -168,68 +166,74 @@ class DetailPokemonImage extends StatelessWidget {
       child: Center(
         child: Hero(
           tag: "pokemon_${pokemon.id}",
-          flightShuttleBuilder: (
-              BuildContext flightContext,
-              Animation<double> animation,
-              HeroFlightDirection flightDirection,
-              BuildContext fromHeroContext,
-              BuildContext toHeroContext,
+          flightShuttleBuilder:
+              (
+                BuildContext flightContext,
+                Animation<double> animation,
+                HeroFlightDirection flightDirection,
+                BuildContext fromHeroContext,
+                BuildContext toHeroContext,
               ) {
-            final fromHero = fromHeroContext.widget as Hero;
-            final toHero = toHeroContext.widget as Hero;
+                final fromHero = fromHeroContext.widget as Hero;
+                final toHero = toHeroContext.widget as Hero;
 
-            final shuttleChild = flightDirection == HeroFlightDirection.push
-                ? toHero.child
-                : fromHero.child;
+                final shuttleChild = flightDirection == HeroFlightDirection.push
+                    ? toHero.child
+                    : fromHero.child;
 
-            return AnimatedBuilder(
-              animation: animation,
-              child: shuttleChild,
-              builder: (context, child) {
-                final curved = Curves.easeInOut.transform(animation.value);
-                final scale = Tween<double>(begin: 0.96, end: 1.0).transform(curved);
-                final opacity = Tween<double>(begin: 0.9, end: 1.0).transform(curved);
+                return AnimatedBuilder(
+                  animation: animation,
+                  child: shuttleChild,
+                  builder: (context, child) {
+                    final curved = Curves.easeInOut.transform(animation.value);
+                    final scale = Tween<double>(
+                      begin: 0.96,
+                      end: 1.0,
+                    ).transform(curved);
+                    final opacity = Tween<double>(
+                      begin: 0.9,
+                      end: 1.0,
+                    ).transform(curved);
 
-                return Material(
-                  type: MaterialType.transparency,
-                  child: Opacity(
-                    opacity: opacity,
-                    child: Transform.scale(scale: scale, child: child),
-                  ),
+                    return Material(
+                      type: MaterialType.transparency,
+                      child: Opacity(
+                        opacity: opacity,
+                        child: Transform.scale(scale: scale, child: child),
+                      ),
+                    );
+                  },
                 );
               },
-            );
-          },
           child: imageUrl == null || imageUrl.isEmpty
               ? Image.asset(
-            'assets/images/image_failed.png',
-            height: imageHeight,
-            fit: BoxFit.contain,
-          )
+                  'assets/images/image_failed.png',
+                  height: imageHeight,
+                  fit: BoxFit.contain,
+                )
               : CachedNetworkImage(
-            imageUrl: imageUrl,
-            height: imageHeight,
-            fit: BoxFit.contain,
-            fadeInDuration: Duration.zero,
-            fadeOutDuration: Duration.zero,
-            placeholder: (context, url) => SizedBox(
-              height: imageHeight,
-              child: const Center(
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
-            ),
-            errorWidget: (context, url, error) => Image.asset(
-              'assets/images/image_failed.png',
-              height: imageHeight,
-              fit: BoxFit.contain,
-            ),
-          ),
+                  imageUrl: imageUrl,
+                  height: imageHeight,
+                  fit: BoxFit.contain,
+                  fadeInDuration: Duration.zero,
+                  fadeOutDuration: Duration.zero,
+                  placeholder: (context, url) => SizedBox(
+                    height: imageHeight,
+                    child: const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/images/image_failed.png',
+                    height: imageHeight,
+                    fit: BoxFit.contain,
+                  ),
+                ),
         ),
       ),
     );
   }
 }
-
 
 class DetailHeader extends StatelessWidget {
   const DetailHeader({super.key, required this.pokemon});
@@ -241,9 +245,9 @@ class DetailHeader extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final maxContentWidth = _responsiveMaxContentWidth(screenWidth);
 
-    final iconSize = (28.w).clamp(22.0, 32.0).toDouble();
-    final horizontalPadding = (20.w).clamp(12.0, 28.0).toDouble();
-    final verticalPadding = (16.h).clamp(6.0, 24.0).toDouble();
+    final iconSize = (24.w).clamp(22.0, 34.0).toDouble();
+    final horizontalPadding = (18.w).clamp(12.0, 28.0).toDouble();
+    final verticalPadding = (12.h).clamp(6.0, 24.0).toDouble();
 
     return SafeArea(
       child: Align(
@@ -277,7 +281,7 @@ class DetailHeader extends StatelessWidget {
                       style: AppTheme.appTextStyles.header2.copyWith(
                         color: AppTheme.appColors.white,
                         letterSpacing: 1.0,
-                        fontSize: (28.w).clamp(22.0, 32.0).toDouble()
+                        fontSize: (22.w).clamp(20.0, 28.0).toDouble(),
                       ),
                     ),
                   ),
@@ -297,16 +301,16 @@ class DetailHeader extends StatelessWidget {
                       },
                       icon: isFavorite
                           ? Image.asset(
-                        'assets/icons/ic_favorited.png',
-                        width: iconSize,
-                        height: iconSize,
-                      )
+                              'assets/icons/ic_favorited.png',
+                              width: iconSize,
+                              height: iconSize,
+                            )
                           : Image.asset(
-                        'assets/icons/ic_favorite.png',
-                        width: iconSize,
-                        height: iconSize,
-                        color: Colors.white,
-                      ),
+                              'assets/icons/ic_favorite.png',
+                              width: iconSize,
+                              height: iconSize,
+                              color: Colors.white,
+                            ),
                     );
                   },
                 ),
@@ -318,7 +322,6 @@ class DetailHeader extends StatelessWidget {
     );
   }
 }
-
 
 class DetailBottomPanel extends StatefulWidget {
   final PokemonEntity pokemon;
@@ -338,10 +341,10 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
     final size = MediaQuery.of(context).size;
     final maxContentWidth = _responsiveMaxContentWidth(size.width);
 
-    final panelHeight = (size.height * 0.62).clamp(430.0, 700.0);
+    final panelHeight = (size.height * 0.63).clamp(430.0, 700.0);
     final panelRadius = (40.r).clamp(26.0, 40.0).toDouble();
 
-    final horizontalPadding = (30.w).clamp(16.0, 32.0).toDouble();
+    final horizontalPadding = (18.w).clamp(16.0, 32.0).toDouble();
     final verticalPadding = (20.h).clamp(12.0, 22.0).toDouble();
     final topInsetForImage = (size.height * 0.08).clamp(42.0, 72.0);
 
@@ -367,19 +370,17 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
             children: [
               SizedBox(height: topInsetForImage),
               Row(
+                spacing: 12.w,
                 children: List.generate(_tabs.length, (index) {
                   return Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: (4.w).clamp(2.0, 8.0)),
-                      child: DetailTab(
-                        text: _tabs[index],
-                        isSelected: _selectedTabIndex == index,
-                        onTap: () {
-                          setState(() {
-                            _selectedTabIndex = index;
-                          });
-                        },
-                      ),
+                    child: DetailTab(
+                      text: _tabs[index],
+                      isSelected: _selectedTabIndex == index,
+                      onTap: () {
+                        setState(() {
+                          _selectedTabIndex = index;
+                        });
+                      },
                     ),
                   );
                 }),
@@ -443,7 +444,6 @@ class _DetailBottomPanelState extends State<DetailBottomPanel> {
   }
 }
 
-
 class DetailTab extends StatelessWidget {
   const DetailTab({
     super.key,
@@ -460,9 +460,11 @@ class DetailTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final width = constraints.maxWidth.isFinite ? constraints.maxWidth : 90.0;
+        final width = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : 90.0;
 
-        final fontSize = (width * 0.16).clamp(12.0, 18.0).toDouble();
+        final baseFontSize = (width * 0.15).clamp(12.0, 18.0).toDouble();
         final spacing = (6.h).clamp(4.0, 8.0).toDouble();
         final lineHeight = (2.6.h).clamp(2.0, 3.5).toDouble();
 
@@ -476,18 +478,27 @@ class DetailTab extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    text,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: AppTheme.appTextStyles.bodySmall.copyWith(
-                      color: isSelected
-                          ? AppTheme.appColors.black
-                          : AppTheme.appColors.grey,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                      fontSize: fontSize,
-                      letterSpacing: 0.4,
+                  SizedBox(
+                    height: (28.h).clamp(22.0, 34.0).toDouble(),
+                    child: Center(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          text,
+                          textAlign: TextAlign.center,
+                          // no maxLines + no ellipsis
+                          style: AppTheme.appTextStyles.bodySmall.copyWith(
+                            color: isSelected
+                                ? AppTheme.appColors.black
+                                : AppTheme.appColors.grey,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.w600,
+                            fontSize: baseFontSize,
+                            letterSpacing: 0.4,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(height: spacing),
@@ -495,13 +506,14 @@ class DetailTab extends StatelessWidget {
                     duration: const Duration(milliseconds: 180),
                     curve: Curves.easeOut,
                     height: lineHeight,
-                    width: isSelected ? (width * 0.55).clamp(18.0, 46.0).toDouble() : 0,
+                    width: isSelected
+                        ? (width * 0.55).clamp(18.0, 46.0).toDouble()
+                        : 0,
                     decoration: BoxDecoration(
                       color: AppTheme.appColors.black,
                       borderRadius: BorderRadius.circular(999),
                     ),
                   ),
-
                 ],
               ),
             ),

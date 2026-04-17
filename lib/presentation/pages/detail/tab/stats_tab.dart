@@ -34,7 +34,7 @@ class StatsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: ListView(
         padding: EdgeInsets.zero,
         physics: const BouncingScrollPhysics(),

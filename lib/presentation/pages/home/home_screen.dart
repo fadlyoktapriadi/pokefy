@@ -65,9 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final maxContentWidth = _responsiveMaxContentWidth(screenWidth);
-
     final verticalPadding = (8.h).clamp(6.0, 14.0).toDouble();
     final horizontalPadding = (18.w).clamp(12.0, 28.0).toDouble();
+    final iconSize = (screenWidth * 0.08).clamp(24.0, 34.0).toDouble();
 
     return BlocProvider.value(
       value: _getPokemonBloc,
@@ -110,8 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             onPressed: () => context.pushNamed('favorite'),
                             icon: Image.asset(
                               "assets/icons/ic_favorite_list.png",
-                              width: (34.w).clamp(24.0, 42.0).toDouble(),
-                              height: (34.h).clamp(24.0, 42.0).toDouble(),
+                              width: iconSize,
+                              height: iconSize,
                               color: AppTheme.appColors.secondary,
                             ),
                           ),

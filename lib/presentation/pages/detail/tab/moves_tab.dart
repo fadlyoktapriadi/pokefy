@@ -14,7 +14,7 @@ class MovesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: BlocBuilder<GetMoveBloc, GetMoveState>(
         builder: (context, state) {
           return state.maybeWhen(

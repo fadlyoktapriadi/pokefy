@@ -24,8 +24,6 @@ class AboutTab extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
-
-        // Jangan pakai contentMaxWidth fixed di sini supaya width mengikuti panel/tab parent.
         final horizontalPagePadding = clamp(8.w, 6, 24);
         final sectionGap = clamp(12.h, 10, 16);
         final rowGap = clamp(8.h, 6, 12);
@@ -78,12 +76,10 @@ class AboutTab extends StatelessWidget {
 
                     SizedBox(height: sectionGap),
 
-                    Wrap(
-                      spacing: halfGap,
-                      runSpacing: halfGap,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: halfWidth,
+                        Expanded(
                           child: _buildInfoBox(
                             iconPath: 'assets/icons/ic_weight.png',
                             title: 'Weight',
@@ -94,8 +90,8 @@ class AboutTab extends StatelessWidget {
                             boxPadding: boxPadding,
                           ),
                         ),
-                        SizedBox(
-                          width: halfWidth,
+                        SizedBox(width: halfGap),
+                        Expanded(
                           child: _buildInfoBox(
                             iconPath: 'assets/icons/ic_height.png',
                             title: 'Height',
@@ -105,7 +101,7 @@ class AboutTab extends StatelessWidget {
                             rowGap: rowGap,
                             boxPadding: boxPadding,
                           ),
-                        ),
+                        )
                       ],
                     ),
 
