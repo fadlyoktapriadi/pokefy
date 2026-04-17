@@ -2,12 +2,12 @@
 
 Pokefy (Pokedex App)
 <br>
-<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/home_page.png" width="200">
-<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_about_tab.png" width="300">
-<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_stats_tab.png" width="300">
-<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_move_tab.png" width="300">
-<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_evo_tab.png" width="300">
-<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/favorite_page.png" width="300">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/home_page.png" width="250">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_about_tab.png" width="250">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_stats_tab.png" width="250">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_move_tab.png" width="250">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_evo_tab.png" width="250">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/favorite_page.png" width="250">
 <br>
 
 ## Detail Project
