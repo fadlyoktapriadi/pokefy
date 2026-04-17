@@ -14,7 +14,7 @@ void main() {
   late _MockDio mockDio;
   late PokemonRemoteDataSourceImpl dataSource;
 
-  Response<dynamic> _response({
+  Response<dynamic> response({
     required String path,
     required Map<String, dynamic> data,
   }) {
@@ -42,7 +42,7 @@ void main() {
             queryParameters: {'offset': 0, 'limit': 20},
           ),
         ).thenAnswer(
-              (_) async => _response(
+              (_) async => response(
             path: '/pokemon',
             data: {
               'count': 1302,
@@ -92,7 +92,7 @@ void main() {
     group('getPokemonDetail', () {
       test('returns PokemonEntity when request succeeds', () async {
         when(() => mockDio.get('/pokemon/pikachu')).thenAnswer(
-              (_) async => _response(
+              (_) async => response(
             path: '/pokemon/pikachu',
             data: {
               'id': 25,
@@ -123,7 +123,7 @@ void main() {
     group('getPokemonSpecies', () {
       test('returns SpeciesEntity when request succeeds', () async {
         when(() => mockDio.get('/pokemon-species/25')).thenAnswer(
-              (_) async => _response(
+              (_) async => response(
             path: '/pokemon-species/25',
             data: {
               'id': 25,
@@ -154,7 +154,7 @@ void main() {
     group('getTypeDefences', () {
       test('returns TypeDefencesEntity when request succeeds', () async {
         when(() => mockDio.get('/type/electric')).thenAnswer(
-              (_) async => _response(
+              (_) async => response(
             path: '/type/electric',
             data: {
               'damage_relations': {
@@ -188,7 +188,7 @@ void main() {
     group('getEvolutionChain', () {
       test('returns EvolutionChainEntity when request succeeds', () async {
         when(() => mockDio.get('/evolution-chain/10')).thenAnswer(
-              (_) async => _response(
+              (_) async => response(
             path: '/evolution-chain/10',
             data: {
               'id': 10,
@@ -229,7 +229,7 @@ void main() {
     group('getMoveDetail', () {
       test('returns MoveDetailEntity when request succeeds', () async {
         when(() => mockDio.get('/move/85')).thenAnswer(
-              (_) async => _response(
+              (_) async => response(
             path: '/move/85',
             data: {
               'id': 85,

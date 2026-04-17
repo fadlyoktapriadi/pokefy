@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:pokefy/core/networks/dio_client.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 class _ThrowingAdapter implements HttpClientAdapter {
   final DioException Function(RequestOptions options) exceptionBuilder;

@@ -155,8 +155,11 @@ class DetailPokemonImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final imageUrl = pokemon.sprites?.other?.home?.frontDefault;
     final size = MediaQuery.of(context).size;
-
-    final imageHeight = (size.width * 0.75).clamp(230.0, 270.0);
+    final imageHeight = size.width >= 1200
+        ? (size.width * 0.24).clamp(220.0, 245.0)
+        : size.width >= 768
+            ? (size.width * 0.34).clamp(240.0, 320.0)
+            : (size.width * 0.62).clamp(295.0, 320.0);
     final topOffset = (size.height * 0.11).clamp(82.0, 100.0);
 
     return Positioned(

@@ -23,7 +23,6 @@ class AboutTab extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final maxWidth = constraints.maxWidth;
         final horizontalPagePadding = clamp(8.w, 6, 24);
         final sectionGap = clamp(12.h, 10, 16);
         final rowGap = clamp(8.h, 6, 12);
@@ -31,13 +30,7 @@ class AboutTab extends StatelessWidget {
         final chipVPad = clamp(8.h, 6, 10);
         final chipHPad = clamp(24.w, 16, 26);
         final iconSize = clamp(14.w, 12, 16);
-
-        final isWide = maxWidth >= 700;
-        final contentWidth = maxWidth - (horizontalPagePadding * 2);
         final halfGap = clamp(12.w, 8, 14);
-        final halfWidth = isWide
-            ? ((contentWidth - halfGap) / 2).clamp(160.0, 420.0)
-            : contentWidth;
 
         return BlocBuilder<GetSpeciesBloc, GetSpeciesState>(
           builder: (context, state) {
