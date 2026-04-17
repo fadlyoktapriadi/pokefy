@@ -1,17 +1,46 @@
-# pokefy
+# Pokefy
 
-Pokedex App
+Pokefy (Pokedex App)
+<br>
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/home_page.png" width="200">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_about_tab.png" width="200">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_stats_tab.png" width="200">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_move_tab.png" width="200">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_evo_tab.png" width="200">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/favorite_page.png" width="200">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/Test%20Unit%20-%20LCov%20Report.png" width="200">
+<br>
 
-## Getting Started
+## Detail Project
+Architecture : Clean Architecture (Presentation - Domain - Data) <br>
+Data Source : Pokedex <br>
+Plugin:
+UI:
+* flutter_screenutil
+* cached_network_image
+* google_fonts
+* lottie
+* google_fonts
+State Management:
+* BLoC
+* GoRouter
+* GetIt
+* Dartz
+Entity Data:
+* Build_runner
+* Freezed
+* Json Serializable
+Data:
+* Dio
+* pretty_dio_logger
+* dio_smart_retry
+* connectivity_plus
+* hive
+Test:
+* Bloc Test
+* Mockito
+* Mocktail
 
-This project is a starting point for a Flutter application.
+## Result Test Unit (LCov)
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/Test%20Unit%20-%20LCov%20Report.png" width="200">
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
