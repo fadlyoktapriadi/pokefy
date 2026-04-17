@@ -14,11 +14,6 @@ Pokefy (Pokedex App)
 Architecture : Clean Architecture (Presentation - Domain - Data) <br>
 Data Source : Pokedex <br>
 Plugin:
-* flutter_screenutil
-* cached_network_image
-* google_fonts
-* lottie
-* google_fonts
 * BLoC
 * GoRouter
 * GetIt
@@ -27,10 +22,14 @@ Plugin:
 * Freezed
 * Json Serializable
 * Dio
-* pretty_dio_logger
-* dio_smart_retry
-* connectivity_plus
-* hive
+* Pretty Dio Logger
+* Dio Smart Retry
+* Connectivity Plus
+* Hive
+* Flutter Screenutil
+* Cached Network Image
+* Google Fonts
+* Lottie
 * Bloc Test
 * Mockito
 * Mocktail
