@@ -8,7 +8,6 @@ Pokefy (Pokedex App)
 <img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_move_tab.png" width="200">
 <img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/detail_evo_tab.png" width="200">
 <img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/favorite_page.png" width="200">
-<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/Test%20Unit%20-%20LCov%20Report.png" width="200">
 <br>
 
 ## Detail Project
@@ -42,5 +41,5 @@ Test:
 * Mocktail
 
 ## Result Test Unit (LCov)
-<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/Test%20Unit%20-%20LCov%20Report.png" width="200">
+<img src="https://github.com/fadlyoktapriadi/pokefy/blob/main/screenshot/Test%20Unit%20-%20LCov%20Report.png">
 
