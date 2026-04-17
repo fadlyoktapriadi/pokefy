@@ -20,21 +20,25 @@ UI:
 * google_fonts
 * lottie
 * google_fonts
+<br>
 State Management:
 * BLoC
 * GoRouter
 * GetIt
 * Dartz
+<br>
 Entity Data:
 * Build_runner
 * Freezed
 * Json Serializable
+<br>
 Data:
 * Dio
 * pretty_dio_logger
 * dio_smart_retry
 * connectivity_plus
 * hive
+<br>
 Test:
 * Bloc Test
 * Mockito
